@@ -1,6 +1,6 @@
 # kanji_remake
 
-A new Flutter project.
+A new Flutter project for kanji remaking.
 
 ## Getting Started
 
