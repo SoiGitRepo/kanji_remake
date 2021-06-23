@@ -1,0 +1,10 @@
+//跨平台屏幕宽度临界点
+const kTabletBreakPoint = 768.0;
+const kDesktopBreakPoint = 1440.0;
+
+const kSideMenuWidth = 300.0;
+const kNavigationRailWidth = 72.0;
+
+const kNormalPaddding = 16.0;
+const kSmallPaddding = 8.0;
+const kBigPaddding = 20.0;
