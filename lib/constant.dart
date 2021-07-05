@@ -8,3 +8,9 @@ const kNavigationRailWidth = 72.0;
 const kNormalPaddding = 16.0;
 const kSmallPaddding = 8.0;
 const kBigPaddding = 20.0;
+
+const kSmallRadius = 6.0;
+const kNormalRadius = 10.0;
+const kBigRadius = 14.0;
+
+const duration = Duration(milliseconds: 400);
