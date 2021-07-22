@@ -21,7 +21,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "custom_review": MessageLookupByLibrary.simpleMessage("自选复习"),
         "jlpt": MessageLookupByLibrary.simpleMessage("日语等级"),
-        "level": MessageLookupByLibrary.simpleMessage("等级")
+        "learned": MessageLookupByLibrary.simpleMessage("已学习"),
+        "level": MessageLookupByLibrary.simpleMessage("等级"),
+        "memorize_this_word": MessageLookupByLibrary.simpleMessage("记忆这个词语："),
+        "need_review": MessageLookupByLibrary.simpleMessage("需要复习"),
+        "ready_to_learn": MessageLookupByLibrary.simpleMessage("可以学习"),
+        "review": MessageLookupByLibrary.simpleMessage("复习"),
+        "select_kanji": MessageLookupByLibrary.simpleMessage("选择对应的汉字："),
+        "which_is": MessageLookupByLibrary.simpleMessage("选择与该词对应的：")
       };
 }

@@ -1,4 +1,12 @@
 {
     "level":"等级",
-    "jlpt":"日语等级"
+    "jlpt":"日语等级",
+    "need_review": "需要复习",
+    "review": "复习",
+    "custom_review": "自选复习",
+    "ready_to_learn": "可以学习",
+    "learned": "已学习",
+    "memorize_this_word": "记忆这个词语：",
+    "which_is": "选择与该词对应的：",
+    "select_kanji": "选择对应的汉字："
 }

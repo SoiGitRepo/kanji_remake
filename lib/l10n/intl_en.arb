@@ -1,4 +1,12 @@
 {
     "level": "Level",
-    "jlpt": "JLPT"
+    "jlpt": "JLPT", 
+    "need_review": "Need Review",
+    "review": "Review Past Due",
+    "custom_review": "Custom Review",
+    "ready_to_learn": "Ready To Learn",
+    "learned": "Learned",
+    "memorize_this_word": "Memorize This Word...",
+    "which_is": "Which of this is...",
+    "select_kanji": "Select the kanji..."
 }

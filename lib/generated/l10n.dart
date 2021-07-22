@@ -69,6 +69,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Need Review`
+  String get need_review {
+    return Intl.message(
+      'Need Review',
+      name: 'need_review',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review Past Due`
+  String get review {
+    return Intl.message(
+      'Review Past Due',
+      name: 'review',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Custom Review`
+  String get custom_review {
+    return Intl.message(
+      'Custom Review',
+      name: 'custom_review',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ready To Learn`
+  String get ready_to_learn {
+    return Intl.message(
+      'Ready To Learn',
+      name: 'ready_to_learn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learned`
+  String get learned {
+    return Intl.message(
+      'Learned',
+      name: 'learned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memorize This Word...`
+  String get memorize_this_word {
+    return Intl.message(
+      'Memorize This Word...',
+      name: 'memorize_this_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Which of this is...`
+  String get which_is {
+    return Intl.message(
+      'Which of this is...',
+      name: 'which_is',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the kanji...`
+  String get select_kanji {
+    return Intl.message(
+      'Select the kanji...',
+      name: 'select_kanji',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

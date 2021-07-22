@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanji_remake/model/level.dart';
-import 'package:kanji_remake/page/wedgets.dart';
+import 'package:kanji_remake/page/start_page/level_entry.dart';
 
 class StartPage extends StatelessWidget {
   final List<Level> list = Level.fetchAll();
@@ -30,7 +30,7 @@ class StartPage extends StatelessWidget {
     );
   }
 
-  navigateToLesson(context) {
+  void navigateToLesson(BuildContext context) {
     Navigator.pushNamed(context, '/lesson');
   }
 }

@@ -1,53 +1,94 @@
 import 'dart:convert';
+import 'package:kanji_remake/model/question_card.dart';
+
+enum KanjiField {
+  all,
+  englishMeaning,
+  hiragana,
+  kanjikata,
+  none,
+}
+const cardTypeToFieldMap = {
+  QuestionCardType.overview: [
+    KanjiField.all,
+  ],
+  QuestionCardType.kanjiOnly: [
+    KanjiField.hiragana,
+    KanjiField.englishMeaning,
+  ],
+  QuestionCardType.meaningOnly: [
+    KanjiField.kanjikata,
+    KanjiField.hiragana,
+  ],
+  QuestionCardType.chooseKanji: [
+    KanjiField.kanjikata,
+  ],
+  QuestionCardType.allDone: [
+    KanjiField.none,
+  ],
+};
 
 class KanjiWord {
-  final int? wordID;
-  final int? lessonID;
-  final String? enMeaning;
-  final String? hirakata;
-  final String? kanjikata;
+  final int? _wordID;
+  final int? _lessonID;
+  final String? _enMeaning;
+  final String? _hiragana;
+  final String? _kanjikata;
+  // final bool? _learned;
+
+  int? get wordID => _wordID;
+  int? get lessonID => _lessonID;
+  String? get enMeaning => _enMeaning;
+  String? get hiragana => _hiragana;
+  String? get kanjikata => _kanjikata;
+  // bool? get learned => _learned;
 
   KanjiWord(
-    this.wordID,
-    this.lessonID,
-    this.enMeaning,
-    this.hirakata,
-    this.kanjikata,
+    // this._learned,
+    this._wordID,
+    this._lessonID,
+    this._enMeaning,
+    this._hiragana,
+    this._kanjikata,
   );
 
-  KanjiWord copyWith({
-    int? wordID,
-    int? lessonID,
-    String? enMeaning,
-    String? hirakata,
-    String? kanjikata,
-  }) {
+  KanjiWord copyWith(
+    int? _wordID,
+    int? _lessonID,
+    String? _enMeaning,
+    String? _hirakata,
+    String? _kanjikata,
+  ) {
     return KanjiWord(
-      wordID ?? this.wordID,
-      lessonID ?? this.lessonID,
-      enMeaning ?? this.enMeaning,
-      hirakata ?? this.hirakata,
-      kanjikata ?? this.kanjikata,
+      _wordID ?? this._wordID,
+      _lessonID ?? this._lessonID,
+      _enMeaning ?? this._enMeaning,
+      _hirakata ?? this._hiragana,
+      _kanjikata ?? this._kanjikata,
     );
+  }
+
+  factory KanjiWord.sample() {
+    return KanjiWord(0, 0, '', '', '');
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'wordID': wordID,
-      'lessonID': lessonID,
-      'enMeaning': enMeaning,
-      'hirakata': hirakata,
-      'kanjikata': kanjikata,
+      '_wordID': _wordID,
+      '_lessonID': _lessonID,
+      '_enMeaning': _enMeaning,
+      '_hirakata': _hiragana,
+      '_kanjikata': _kanjikata,
     };
   }
 
   factory KanjiWord.fromMap(Map<String, dynamic> map) {
     return KanjiWord(
-      map['wordID'],
-      map['lessonID'],
-      map['enMeaning'],
-      map['hirakata'],
-      map['kanjikata'],
+      map['_wordID'],
+      map['_lessonID'],
+      map['_enMeaning'],
+      map['_hirakata'],
+      map['_kanjikata'],
     );
   }
 
@@ -58,7 +99,7 @@ class KanjiWord {
 
   @override
   String toString() {
-    return 'KanjiWord(wordID: $wordID, lessonID: $lessonID, enMeaning: $enMeaning, hirakata: $hirakata, kanjikata: $kanjikata)';
+    return 'KanjiWord(_wordID: $_wordID, _lessonID: $_lessonID, _enMeaning: $_enMeaning, _hirakata: $_hiragana, _kanjikata: $_kanjikata)';
   }
 
   @override
@@ -66,19 +107,19 @@ class KanjiWord {
     if (identical(this, other)) return true;
 
     return other is KanjiWord &&
-        other.wordID == wordID &&
-        other.lessonID == lessonID &&
-        other.enMeaning == enMeaning &&
-        other.hirakata == hirakata &&
-        other.kanjikata == kanjikata;
+        other._wordID == _wordID &&
+        other._lessonID == _lessonID &&
+        other._enMeaning == _enMeaning &&
+        other._hiragana == _hiragana &&
+        other._kanjikata == _kanjikata;
   }
 
   @override
   int get hashCode {
-    return wordID.hashCode ^
-        lessonID.hashCode ^
-        enMeaning.hashCode ^
-        hirakata.hashCode ^
-        kanjikata.hashCode;
+    return _wordID.hashCode ^
+        _lessonID.hashCode ^
+        _enMeaning.hashCode ^
+        _hiragana.hashCode ^
+        _kanjikata.hashCode;
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const List<Color> LEVEL_COLOURS = [
+const List<Color> kLevelColors = [
   Color.fromARGB(255, 77, 180, 185),
   Color.fromARGB(255, 254, 68, 82),
   Color.fromARGB(255, 49, 204, 112),
@@ -8,7 +8,12 @@ const List<Color> LEVEL_COLOURS = [
   Color.fromARGB(255, 74, 136, 219),
 ];
 
-const prymaryColor = Color.fromARGB(255, 47, 204, 113);
-const buttonColor = Color.fromARGB(255, 47, 204, 113);
-const buttonColor2 = Color.fromARGB(255, 49, 62, 78);
-const scaffoldBgColor = Color.fromARGB(255, 36, 49, 65);
+const kPrymaryColor = Color(0xff243141);
+const kButtonBgColor = Color(0xff2FCC71);
+const kButtonBgColor2 = Color(0xff313E4E);
+const kButtonBgColorDisable = Color(0x10151B);
+const kScaffoldBgColor = Color(0xff243141);
+const kReviewLableColor = Color(0xffFFA70F);
+const kReadyLableColor = Color(0xff69CB5C);
+const kProgressIndicatorColor = Color(0xffFE4253);
+const kBody2Color = Color(0xffD3D4D9);

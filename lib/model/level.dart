@@ -8,12 +8,12 @@ class Level {
 
   Level(this.title, this.color, this.level);
 
-  static const List<String> LEVEL = ['N1', 'N2', 'N3', 'N4', 'N5'];
+  static const List<String> levels = ['N1', 'N2', 'N3', 'N4', 'N5'];
 
   static List<Level> fetchAll() {
-    List<Level> result = [];
+    final List<Level> result = [];
     for (var i = 0; i < 5; i++) {
-      result.add(Level(LEVEL[i], LEVEL_COLOURS[i], i + 1));
+      result.add(Level(levels[i], kLevelColors[i], i + 1));
     }
     return result;
   }
