@@ -1,77 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/model/question_card.dart';
+import 'package:kanji_remake/model/kanji_word.dart';
+import 'package:kanji_remake/page/question_page/quesition_page.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/utils/util.dart';
 
 final _buttonEnableProvider = StateNotifierProvider(
     (ref) => ListBoolNotifier(List.generate(4, (index) => true)));
 
-class ChooseFromKanjiKataCard extends HookWidget {
-  const ChooseFromKanjiKataCard({
-    Key? key,
-  }) : super(key: key);
+class FourChoiceCard extends QuestionCardBlock {
+  FourChoiceCard(void Function() onPass, void Function() onTokeWrong)
+      : super(onPass, onTokeWrong);
 
   @override
   Widget build(BuildContext context) {
+    final kanjiFieldAsking = useProvider(currentKanjiFieldAsking);
+    final ifShowSubTitle = useProvider(showSubTitle);
+    final buttonEnableList = useProvider(_buttonEnableProvider);
+    final allButtonChoices = useProvider(allChoicesProvider);
+    final currentCard = useProvider(currentQuestionCardProvider);
+    final currentProgress = useProvider(currentProgressProvider);
+    final haveTakenWrongOne = useProvider(ifTokeWrongProvider);
+
     final S appLocalizations = S.of(context);
     final Size size = MediaQuery.of(context).size;
     final labelHeight = size.height * kLabelHeightRTSH;
     final titleHeight = size.height * kTitleHeightRTSH;
     final subtitleHeight = size.height * kSubtitleHeightRTSH;
 
-    final currentCard = useProvider(currentLearningCardProvider);
-    // final kanjiFieldAsking = currentCard.kanjiFieldAskingFor.first;
-
-    final currentOrderIndex = useProvider(currentLearningOrderIndexProvider);
-    final haveTakenWrongOne = useProvider(currentCardTokeWrongProvider);
-    final currentKanjiWords =
-        useProvider(currentLessonKanjiWordsProvider).state.toSet();
-    final ifChoosingHirakata =
-        currentCard.questionCardType == QuestionCardType.kanjiOnly;
-    final showSubTitle = useState(false);
-    final hiratakaOrMeaning = !showSubTitle.value == ifChoosingHirakata;
-    final currentAnswer = hiratakaOrMeaning
+    final ifChoosingHiragana = kanjiFieldAsking == KanjiField.hiragana;
+    final currentAnswer = ifChoosingHiragana
         ? currentCard.kanjiWord.hiragana
         : currentCard.kanjiWord.enMeaning;
-    final buttonEnableList = useProvider(_buttonEnableProvider);
-    final allChoices = currentKanjiWords
-        .skipWhile((value) => hiratakaOrMeaning
-            ? value.hiragana == currentAnswer
-            : value.enMeaning == currentAnswer)
-        .take(3)
-        .map(
-          (e) => hiratakaOrMeaning ? e.hiragana : e.enMeaning,
-        )
-        .toList()
-          ..add(hiratakaOrMeaning
-              ? currentCard.kanjiWord.hiragana
-              : currentCard.kanjiWord.enMeaning);
 
-    onFistPass() {
-      showSubTitle.value = !showSubTitle.value;
+    onThisPass() {
+      onPass!();
       context.read(_buttonEnableProvider.notifier).setAllto(true);
     }
 
-    onSecPass() {
-      if (haveTakenWrongOne.state) {
-        context
-            .read(currentLearningOrderProvider.notifier)
-            .removeAt(currentOrderIndex.state);
-        context.read(currentLearningOrderProvider.notifier).add(currentCard);
-      } else {
-        currentOrderIndex.state++;
-      }
-      haveTakenWrongOne.state = false;
-      onFistPass();
-    }
-
     onTakenWrongAnswer(index) {
-      haveTakenWrongOne.state = true;
+      onTokeWrong!();
       context.read(_buttonEnableProvider.notifier).toggle(index);
     }
 
@@ -105,16 +76,16 @@ class ChooseFromKanjiKataCard extends HookWidget {
                   ),
                 ),
               ),
-              showSubTitle.value
+              ifShowSubTitle
                   ? Center(
                       child: SizedBox(
                         height: subtitleHeight,
                         child: FittedBox(
                           child: Text(
-                            ifChoosingHirakata
-                                ? currentCard.kanjiWord.hiragana ??
-                                    'no Kanjikata'
-                                : currentCard.kanjiWord.enMeaning ??
+                            ifChoosingHiragana
+                                ? currentCard.kanjiWord.enMeaning ??
+                                    'no hiragana'
+                                : currentCard.kanjiWord.hiragana ??
                                     'no english Meaning',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -128,8 +99,8 @@ class ChooseFromKanjiKataCard extends HookWidget {
           Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: allChoices.map((e) {
-              final index = allChoices.indexOf(e);
+            children: allButtonChoices.map((e) {
+              final index = allButtonChoices.indexOf(e);
               return Padding(
                 padding: const EdgeInsets.all(kSmallPaddding),
                 child: ElevatedButton(
@@ -143,11 +114,7 @@ class ChooseFromKanjiKataCard extends HookWidget {
                             if (e != currentAnswer) {
                               onTakenWrongAnswer(index);
                             } else {
-                              if (showSubTitle.value) {
-                                onSecPass();
-                              } else {
-                                onFistPass();
-                              }
+                              onThisPass();
                             }
                           }
                         : null,
@@ -164,24 +131,10 @@ class ChooseFromKanjiKataCard extends HookWidget {
   }
 }
 
-// final currentChoosingType = Provider<KanjiField>((ref) {
-//   final currentLearningCard = ref.watch(currentLearningCardProvider);
-//   currentLearningCard.learningCardEvent
-// });
-
-// final _allChoices = Provider<List<String>>((ref) {
-//   final currentKanjiWords = ref.watch(currentLessonKanjiWords);
-
-//   return currentKanjiWords
-//       .skipWhile((value) => hiratakaOrMeaning
-//           ? value.hiragana == currentAnswer
-//           : value.enMeaning == currentAnswer)
-//       .take(3)
-//       .map(
-//         (e) => hiratakaOrMeaning ? e.hiragana : e.enMeaning,
-//       )
-//       .toList()
-//         ..add(hiratakaOrMeaning
-//             ? currentCard.kanjiWord.hiragana
-//             : currentCard.kanjiWord.enMeaning);
-// });
+final showSubTitle = Provider<bool>((ref) {
+  final currentFieldProgress = ref.watch(currentFieldProgressProvider);
+  if (currentFieldProgress.state == 0) {
+    return false;
+  }
+  return true;
+});

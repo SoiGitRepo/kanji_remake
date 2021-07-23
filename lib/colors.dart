@@ -17,3 +17,5 @@ const kReviewLableColor = Color(0xffFFA70F);
 const kReadyLableColor = Color(0xff69CB5C);
 const kProgressIndicatorColor = Color(0xffFE4253);
 const kBody2Color = Color(0xffD3D4D9);
+const kRadioGroupColor = Color(0xffD4D4D6);
+const kDividerColor = Color(0xffB5B5B7);

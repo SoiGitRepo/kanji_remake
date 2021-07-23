@@ -2,13 +2,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/model/kanji_word.dart';
 import 'package:kanji_remake/model/question_card.dart';
 import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
+import 'package:kanji_remake/page/question_page/card_kanji_choice.dart';
 
 final currentLessonKanjiWordsProvider = StateProvider<List<KanjiWord>>((ref) {
   final lessonList = ref.watch(lessonsListProvider);
   return lessonList.first.kanjiList;
 });
 
-final currentLearningOrderProvider =
+final currentQuestionOrderProvider =
     StateNotifierProvider<ListCardOrder, List<QuestionCard>>((ref) {
   final kanjiWords = ref.watch(currentLessonKanjiWordsProvider).state;
   final questionCardType;
@@ -37,18 +38,24 @@ final currentLearningOrderProvider =
   return cardOrder;
 });
 
-final currentLearningOrderIndexProvider = StateProvider<int>((ref) {
-  final kanjiWords = ref.watch(currentLessonKanjiWordsProvider);
+final currentProgressProvider = StateProvider<int>((ref) {
+  ref.watch(currentLessonKanjiWordsProvider);
   return 0;
 });
-final currentCardTokeWrongProvider = StateProvider<bool>((ref) {
-  final currentQuestion = ref.watch(currentLearningCardProvider);
+
+final currentFieldProgressProvider = StateProvider<int>((ref) {
+  ref.watch(currentProgressProvider);
+  return 0;
+});
+
+final ifTokeWrongProvider = StateProvider<bool>((ref) {
+  ref.watch(currentQuestionCardProvider);
   return false;
 });
 
-final currentLearningCardProvider = Provider<QuestionCard>((ref) {
-  final order = ref.watch(currentLearningOrderProvider);
-  final index = ref.watch(currentLearningOrderIndexProvider);
+final currentQuestionCardProvider = Provider<QuestionCard>((ref) {
+  final order = ref.watch(currentQuestionOrderProvider);
+  final index = ref.watch(currentProgressProvider);
   assert(order.length > 0);
   if (index.state >= order.length)
     return QuestionCard(
@@ -58,4 +65,51 @@ final currentLearningCardProvider = Provider<QuestionCard>((ref) {
     );
   else
     return order[index.state];
+});
+
+final currentKanjiFieldAsking = Provider<KanjiField>((ref) {
+  final currentCardFields =
+      ref.watch(currentQuestionCardProvider).kanjiFieldAskingFor;
+  final currentFieldProgress = ref.watch(currentFieldProgressProvider);
+  if (currentFieldProgress.state < currentCardFields.length) {
+    return currentCardFields[currentFieldProgress.state];
+  }
+  return KanjiField.none;
+});
+
+final allChoicesProvider = Provider<List>((ref) {
+  final currentKanjiField = ref.watch(currentKanjiFieldAsking);
+  final currentKanjiWords = ref.watch(currentLessonKanjiWordsProvider).state;
+  final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
+  final currentAnswerList = ref.watch(currentKanjikataQueue);
+
+  switch (currentKanjiField) {
+    case KanjiField.kanjikata:
+      return List.generate(9, (index) {
+        if (index < currentAnswerList.length) {
+          return MapEntry(
+              index, String.fromCharCode(currentAnswerList[index].value));
+        } else
+          return MapEntry(index, "错");
+      })
+        ..shuffle();
+    case KanjiField.hiragana:
+      return currentKanjiWords
+          .skipWhile((value) => value.hiragana == currentKanjiWord.hiragana)
+          .take(3)
+          .map((e) => e.hiragana)
+          .toList()
+            ..add(currentKanjiWord.hiragana)
+            ..shuffle();
+    case KanjiField.englishMeaning:
+      return currentKanjiWords
+          .skipWhile((value) => value.enMeaning == currentKanjiWord.enMeaning)
+          .take(3)
+          .map((e) => e.enMeaning)
+          .toList()
+            ..add(currentKanjiWord.enMeaning)
+            ..shuffle();
+    default:
+      return [];
+  }
 });

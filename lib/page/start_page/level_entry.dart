@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
@@ -13,7 +15,8 @@ class WidgetLevelEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.6;
+    final size = MediaQuery.of(context).size;
+    final width = min(size.width, size.height) * 0.6;
     final ThemeData _theme = Theme.of(context);
     final S _appLocalizations = S.of(context);
 
@@ -36,10 +39,12 @@ class WidgetLevelEntry extends StatelessWidget {
               width: width,
               height: width,
               child: Center(
-                  child: Text(
-                levelEntity.title,
-                style: _theme.textTheme.headline1?.copyWith(
-                  color: Colors.white,
+                  child: FittedBox(
+                child: Text(
+                  levelEntity.title,
+                  style: _theme.textTheme.headline1?.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               )),
             ),

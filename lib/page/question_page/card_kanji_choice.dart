@@ -1,22 +1,20 @@
 import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
+import 'package:kanji_remake/model/question_card.dart';
+import 'package:kanji_remake/page/question_page/quesition_page.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 import 'package:kanji_remake/utils/functions.dart';
 import 'package:kanji_remake/utils/util.dart';
 
-class ChooseKanjiCard extends HookWidget {
-  const ChooseKanjiCard({
-    Key? key,
-  }) : super(key: key);
+class ChooseKanjiCard extends QuestionCardBlock {
+  ChooseKanjiCard(void Function() onPass, void Function() onTokeWrong)
+      : super(onPass, onTokeWrong);
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +28,20 @@ class ChooseKanjiCard extends HookWidget {
             choiceHeight * 3 -
             kSmallPaddding * 2) /
         2;
-
-    //监听
-    final S _appLocalizations = S.of(context);
-    final currentOrderIndex = useProvider(currentLearningOrderIndexProvider);
     final currentAnswerIndex = useProvider(_currentAnswerIndex);
-    final currentKanjiWord = useProvider(currentLearningCardProvider).kanjiWord;
-    final currentAnswerQueue = useProvider(_currentAnswerQueue);
     final ifChosen = useProvider(_ifChosen);
+    final currentCard = useProvider(currentQuestionCardProvider);
+
+    final S _appLocalizations = S.of(context);
+    final allButtonChoices = context.read(allChoicesProvider);
+    final currentKanjiWord =
+        context.read(currentQuestionCardProvider).kanjiWord;
+    final currentAnswerQueue = context.read(currentKanjikataQueue);
     final ifDone = ifChosen
             .take(currentAnswerQueue.length)
             .where((element) => element)
             .length ==
         currentAnswerQueue.length;
-    final allChoices = useProvider(_allChoices);
     final answerHeight = min(
         (size.width - 2 * kNormalPaddding) /
             (currentKanjiWord.kanjikata!.length),
@@ -58,7 +56,6 @@ class ChooseKanjiCard extends HookWidget {
     }
 
     bool isChosenAsCorrect(int index) {
-      // print(currentAnswerIndex.state);
       return currentAnswerIndex.state >= index && ifChosen[index];
     }
 
@@ -76,7 +73,7 @@ class ChooseKanjiCard extends HookWidget {
         return size.height * 0.6;
       }
       return kBigPaddding +
-          ((8 - allChoices.indexOf(e)) / 3).floorToDouble() *
+          ((8 - allButtonChoices.indexOf(e)) / 3).floorToDouble() *
               (choiceHeight + kSmallPaddding);
     }
 
@@ -85,7 +82,7 @@ class ChooseKanjiCard extends HookWidget {
     }
 
     void cancelOtherChosen() {
-      allChoices.forEach((element) {
+      allButtonChoices.forEach((element) {
         if (element.key > currentAnswerIndex.state && ifChosen[element.key]) {
           toggleChosen(element.key);
         }
@@ -98,24 +95,27 @@ class ChooseKanjiCard extends HookWidget {
           : ifChosen[e.key]
               ? null
               : () {
-                  if (currentAnswerIndex.state >= e.key &&
-                      currentAnswerIndex.state <
-                          currentAnswerQueue.length - 1) {
-                    cancelOtherChosen();
-                    currentAnswerIndex.state++;
-                  }
                   toggleChosen(e.key);
+                  if (currentAnswerIndex.state >= e.key) {
+                    cancelOtherChosen();
+                    if (currentAnswerIndex.state <
+                        currentAnswerQueue.length - 1) {
+                      currentAnswerIndex.state++;
+                    }
+                  } else {
+                    onTokeWrong!();
+                  }
                 };
     }
 
     List<Widget> choiceCard() {
-      return allChoices.map(
+      return allButtonChoices.map(
         (e) {
           return isAnswer(e.key)
               ? AnimatedPositioned(
                   left: isChosenAsCorrect(e.key)
                       ? caculateChosenButtonLeft(e.key)
-                      : caculateChoiceButtonLeft(allChoices.indexOf(e)),
+                      : caculateChoiceButtonLeft(allButtonChoices.indexOf(e)),
                   bottom: caculateChoiceButtonBottom(e),
                   child: ChooseKanjiButton(
                     e: e,
@@ -130,7 +130,8 @@ class ChooseKanjiCard extends HookWidget {
               : ifDone
                   ? Container()
                   : Positioned(
-                      left: caculateChoiceButtonLeft(allChoices.indexOf(e)),
+                      left:
+                          caculateChoiceButtonLeft(allButtonChoices.indexOf(e)),
                       bottom: caculateChoiceButtonBottom(e),
                       child: ChooseKanjiButton(
                         e: e,
@@ -201,15 +202,17 @@ class ChooseKanjiCard extends HookWidget {
               ),
             ),
           ),
-          Positioned(
-            bottom: size.height * 0.6 + choiceHeight,
-            height: subtitleHeight,
-            child: FittedBox(
-              child: Text(
-                currentKanjiWord.hiragana ?? 'no hiragana',
-              ),
-            ),
-          ),
+          currentCard.questionCardType == QuestionCardType.meaningOnly
+              ? Container()
+              : Positioned(
+                  bottom: size.height * 0.6 + choiceHeight,
+                  height: subtitleHeight,
+                  child: FittedBox(
+                    child: Text(
+                      currentKanjiWord.hiragana ?? 'no hiragana',
+                    ),
+                  ),
+                ),
           Positioned(
             left: answerPaddingLeft,
             bottom: size.height * 0.6,
@@ -244,7 +247,7 @@ class ChooseKanjiCard extends HookWidget {
                         padding: EdgeInsets.all(kNormalPaddding),
                         child: ElevatedButton(
                           onPressed: () {
-                            currentOrderIndex.state++;
+                            onPass!();
                           },
                           child: Text(
                             'OK',
@@ -263,28 +266,16 @@ class ChooseKanjiCard extends HookWidget {
 }
 
 final _currentAnswerIndex = StateProvider<int>((ref) {
-  final currentQuestion = ref.watch(currentLearningCardProvider);
+  ref.watch(currentQuestionCardProvider);
   return 0;
 });
 final _ifChosen = StateNotifierProvider<ListBoolNotifier, List<bool>>((ref) {
-  final currentQuestion = ref.watch(currentLearningCardProvider);
+  ref.watch(currentQuestionCardProvider);
   return ListBoolNotifier(List.generate(9, (index) => false));
 });
 
-final _allChoices = Provider<List<MapEntry<int, String>>>((ref) {
-  final currentAnswerList = ref.watch(_currentAnswerQueue);
-  return List.generate(9, (index) {
-    if (index < currentAnswerList.length) {
-      return MapEntry(
-          index, String.fromCharCode(currentAnswerList[index].value));
-    } else
-      return MapEntry(index, "错");
-  })
-    ..shuffle();
-});
-
-final _currentAnswerQueue = Provider<List<MapEntry<int, int>>>((ref) {
-  final currentKanjiWord = ref.watch(currentLearningCardProvider).kanjiWord;
+final currentKanjikataQueue = Provider<List<MapEntry<int, int>>>((ref) {
+  final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
   final codeUnits = currentKanjiWord.kanjikata!.codeUnits;
   final List<MapEntry<int, int>> queue = [];
   for (int i = 0; i < codeUnits.length; i++) {

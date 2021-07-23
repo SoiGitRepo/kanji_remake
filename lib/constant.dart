@@ -8,6 +8,7 @@ const kNavigationRailWidth = 72.0;
 const kNormalPaddding = 16.0;
 const kSmallPaddding = 8.0;
 const kBigPaddding = 20.0;
+const kDefaultInsetPadding = 40;
 
 const kSmallRadius = 8.0;
 const kNormalRadius = 12.0;
@@ -24,6 +25,8 @@ const kNormalButtonHeight = 50.0;
 const kBigButtonHeight = 65.0;
 
 const kDuration = Duration(milliseconds: 400);
+const kFastDuration = Duration(milliseconds: 200);
+const kSlowDuration = Duration(milliseconds: 600);
 
 const kHiraganaStartUnicode = 0x3041;
 const kHiraganaEndUnicode = 0x309F;

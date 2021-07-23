@@ -4,9 +4,9 @@ import 'package:kanji_remake/model/kanji_word.dart';
 enum QuestionCardType { overview, chooseKanji, kanjiOnly, meaningOnly, allDone }
 const questionCardTypeSet = [
   QuestionCardType.overview,
+  QuestionCardType.chooseKanji,
   QuestionCardType.kanjiOnly,
   QuestionCardType.meaningOnly,
-  QuestionCardType.chooseKanji,
 ];
 
 class QuestionCard {
