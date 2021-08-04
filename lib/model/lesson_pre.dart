@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:kanji_remake/model/kanji_word.dart';
+import 'kanji_word_1.dart';
 
 enum LessonState {
   notReady,
@@ -11,10 +11,23 @@ enum LessonState {
 
 class LessonPre {
   final int lessonID;
-  final List<KanjiWord> kanjiList;
-  final LessonState state;
+  final List<KanjiWord> wordList;
+  late final LessonState state;
 
-  LessonPre(this.lessonID, this.kanjiList, [this.state = LessonState.learned]);
+  LessonPre(this.lessonID, this.wordList) {
+    for (var i = 0; i < wordList.length; i++) {
+      if (wordList[i].lastTimePass == null) {
+        if (lessonID == 0 || i != 0) {
+          state = LessonState.ready;
+          return;
+        } else {
+          state = LessonState.notReady;
+        }
+        return;
+      }
+    }
+    state = LessonState.learned;
+  }
 }
 
 class LessonList extends StateNotifier<List<LessonPre>> {
@@ -29,17 +42,10 @@ class LessonList extends StateNotifier<List<LessonPre>> {
     state = state.where((todo) => todo.lessonID != target.lessonID).toList();
   }
 
-  void toggle(String id, LessonState lessonState) {
+  void update(String id, LessonPre taget) {
     state = [
       for (final lesson in state)
-        if (lesson.lessonID == id)
-          LessonPre(
-            lesson.lessonID,
-            lesson.kanjiList,
-            lessonState,
-          )
-        else
-          lesson,
+        if (lesson.lessonID == id) taget else lesson,
     ];
   }
 }

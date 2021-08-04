@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/model/kanji_word.dart';
 
+import 'kanji_word_1.dart';
+
 enum QuestionCardType { overview, chooseKanji, kanjiOnly, meaningOnly, allDone }
 const questionCardTypeSet = [
   QuestionCardType.overview,

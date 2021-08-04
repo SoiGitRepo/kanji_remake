@@ -1,12 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/model/kanji_word.dart';
+import 'package:kanji_remake/model/kanji_word_1.dart';
 import 'package:kanji_remake/model/question_card.dart';
 import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
 import 'package:kanji_remake/page/question_page/card_kanji_choice.dart';
 
 final currentLessonKanjiWordsProvider = StateProvider<List<KanjiWord>>((ref) {
   final lessonList = ref.watch(lessonsListProvider);
-  return lessonList.first.kanjiList;
+  return lessonList.state.first.wordList;
 });
 
 final currentQuestionOrderProvider =
@@ -59,7 +60,7 @@ final currentQuestionCardProvider = Provider<QuestionCard>((ref) {
   assert(order.length > 0);
   if (index.state >= order.length)
     return QuestionCard(
-      KanjiWord.sample(),
+      KanjiWord(word: "sample"),
       QuestionCardType.allDone,
       cardTypeToFieldMap[QuestionCardType.allDone] ?? [KanjiField.all],
     );
@@ -95,21 +96,28 @@ final allChoicesProvider = Provider<List>((ref) {
         ..shuffle();
     case KanjiField.hiragana:
       return currentKanjiWords
-          .skipWhile((value) => value.hiragana == currentKanjiWord.hiragana)
+          .where((element) => element.word != currentKanjiWord.word)
           .take(3)
           .map((e) => e.hiragana)
           .toList()
             ..add(currentKanjiWord.hiragana)
             ..shuffle();
-    case KanjiField.englishMeaning:
+    case KanjiField.meaning:
       return currentKanjiWords
-          .skipWhile((value) => value.enMeaning == currentKanjiWord.enMeaning)
+          .where((element) => element.word != currentKanjiWord.word)
           .take(3)
-          .map((e) => e.enMeaning)
+          .map((e) => e.meanings.toString())
           .toList()
-            ..add(currentKanjiWord.enMeaning)
+            ..add(currentKanjiWord.meanings.toString())
             ..shuffle();
     default:
       return [];
   }
+});
+final showSubTitle = Provider<bool>((ref) {
+  final currentFieldProgress = ref.watch(currentFieldProgressProvider);
+  if (currentFieldProgress.state == 0) {
+    return false;
+  }
+  return true;
 });

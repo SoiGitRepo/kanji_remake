@@ -19,3 +19,5 @@ const kProgressIndicatorColor = Color(0xffFE4253);
 const kBody2Color = Color(0xffD3D4D9);
 const kRadioGroupColor = Color(0xffD4D4D6);
 const kDividerColor = Color(0xffB5B5B7);
+const kCursorColor = Color(0xff446BF2);
+const kDialogBgColor = Color(0xffF2F2F2);

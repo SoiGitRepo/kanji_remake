@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "564020699702",
+    "firebase_url": "https://kanji-remake-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kanji-remake",
+    "storage_bucket": "kanji-remake.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564020699702:android:1a8388d946659c53746e97",
+        "android_client_info": {
+          "package_name": "com.soigrames.kanjiremake"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564020699702-bm4jlg9arkfqfo12p43215r4c2bsnps3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0G0prtwznaOv2Xqei9-aodc208TeQ49M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564020699702-bm4jlg9arkfqfo12p43215r4c2bsnps3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,7 +5,7 @@ import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/model/question_card.dart';
-import 'package:kanji_remake/page/question_page/quesition_page.dart';
+import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
@@ -43,12 +43,11 @@ class ChooseKanjiCard extends QuestionCardBlock {
             .length ==
         currentAnswerQueue.length;
     final answerHeight = min(
-        (size.width - 2 * kNormalPaddding) /
-            (currentKanjiWord.kanjikata!.length),
+        (size.width - 2 * kNormalPaddding) / (currentKanjiWord.word.length),
         choiceHeight);
     final answerPaddingLeft = (size.width -
             2 * kNormalPaddding -
-            answerHeight * (currentKanjiWord.kanjikata!.length)) /
+            answerHeight * (currentKanjiWord.word.length)) /
         2;
 
     bool isAnswer(int index) {
@@ -68,7 +67,7 @@ class ChooseKanjiCard extends QuestionCardBlock {
       return answerPaddingLeft + answerHeight * position;
     }
 
-    caculateChoiceButtonBottom(MapEntry<int, String> e) {
+    double caculateChoiceButtonBottom(MapEntry<int, String> e) {
       if (isChosenAsCorrect(e.key)) {
         return size.height * 0.6;
       }
@@ -127,28 +126,32 @@ class ChooseKanjiCard extends QuestionCardBlock {
                     onPressed: onButtonPressed,
                   ),
                   duration: kDuration)
-              : ifDone
-                  ? Container()
-                  : Positioned(
-                      left:
-                          caculateChoiceButtonLeft(allButtonChoices.indexOf(e)),
-                      bottom: caculateChoiceButtonBottom(e),
-                      child: ChooseKanjiButton(
-                        e: e,
-                        height: isChosenAsCorrect(e.key)
-                            ? answerHeight - kSmallPaddding
-                            : choiceHeight,
-                        ifChosen: ifChosen[e.key],
-                        isChosenAsCorrect: isChosenAsCorrect(e.key),
-                        onPressed: onButtonPressed,
-                      ),
-                    );
+              :
+              //  ifDone
+              //     ? Container()
+              //     :
+              Positioned(
+                  left: caculateChoiceButtonLeft(allButtonChoices.indexOf(e)),
+                  bottom: caculateChoiceButtonBottom(e),
+                  child: Visibility(
+                    visible: !ifDone,
+                    child: ChooseKanjiButton(
+                      e: e,
+                      height: isChosenAsCorrect(e.key)
+                          ? answerHeight - kSmallPaddding
+                          : choiceHeight,
+                      ifChosen: ifChosen[e.key],
+                      isChosenAsCorrect: isChosenAsCorrect(e.key),
+                      onPressed: onButtonPressed,
+                    ),
+                  ),
+                );
         },
       ).toList();
     }
 
     buildAnswerWithoutKanji() {
-      return currentKanjiWord.kanjikata!.codeUnits.map(
+      return currentKanjiWord.word.codeUnits.map(
         (e) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: kSmallPaddding / 2),
@@ -195,10 +198,11 @@ class ChooseKanjiCard extends QuestionCardBlock {
           ),
           Positioned(
             bottom: size.height * 0.6 + choiceHeight + subtitleHeight,
+            width: size.width - 2 * kNormalPaddding,
             height: titleHeight,
             child: FittedBox(
               child: Text(
-                currentKanjiWord.enMeaning ?? 'no Kanjikata',
+                currentKanjiWord.meanings?.toString() ?? 'no meanings',
               ),
             ),
           ),
@@ -221,44 +225,45 @@ class ChooseKanjiCard extends QuestionCardBlock {
             ),
           ),
           ...choiceCard(),
-          ifDone
-              ? Positioned(
-                  left: 0,
-                  bottom: 0,
-                  width: size.width - 2 * kNormalPaddding,
-                  child: Column(
-                    children: [
-                      IconButton(
-                        // padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Icon(
-                            Icons.play_circle_fill_rounded,
-                            color: Colors.blue[700],
-                          ),
-                        ),
-                        iconSize: 50.0,
+          Visibility(
+            visible: ifDone,
+            child: Positioned(
+              left: 0,
+              bottom: 0,
+              width: size.width - 2 * kNormalPaddding,
+              child: Column(
+                children: [
+                  IconButton(
+                    // padding: EdgeInsets.zero,
+                    onPressed: () {},
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(kNormalPaddding),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            onPass!();
-                          },
-                          child: Text(
-                            'OK',
-                          ),
-                          style: kOkButtonStyle,
-                        ),
-                      )
-                    ],
+                      child: Icon(
+                        Icons.play_circle_fill_rounded,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                    iconSize: 50.0,
                   ),
-                )
-              : Container(),
+                  Padding(
+                    padding: EdgeInsets.all(kNormalPaddding),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        onPass!();
+                      },
+                      child: Text(
+                        'OK',
+                      ),
+                      style: kOkButtonStyle,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -276,7 +281,7 @@ final _ifChosen = StateNotifierProvider<ListBoolNotifier, List<bool>>((ref) {
 
 final currentKanjikataQueue = Provider<List<MapEntry<int, int>>>((ref) {
   final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
-  final codeUnits = currentKanjiWord.kanjikata!.codeUnits;
+  final codeUnits = currentKanjiWord.word.codeUnits;
   final List<MapEntry<int, int>> queue = [];
   for (int i = 0; i < codeUnits.length; i++) {
     queue.add(MapEntry(i, codeUnits[i]));

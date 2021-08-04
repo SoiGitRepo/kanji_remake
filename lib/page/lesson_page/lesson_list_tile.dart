@@ -14,34 +14,34 @@ class LessonEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final S _appLocalizations = S.of(context);
+    final S _s = S.of(context);
 
     final ifEnable = lessonPre.state != LessonState.notReady;
-    final ifShowLable = lessonPre.state != LessonState.notReady;
+    final ifShowLable = ifEnable;
 
     late final lableColor;
     late final labelText;
     switch (lessonPre.state) {
       case LessonState.ready:
-        labelText = _appLocalizations.ready_to_learn;
+        labelText = _s.ready_to_learn;
         lableColor = kReadyLableColor;
         break;
-      case LessonState.needReview:
-        labelText = _appLocalizations.need_review;
-        lableColor = kReviewLableColor;
-        break;
       case LessonState.learned:
-        labelText = _appLocalizations.learned;
+        labelText = _s.learned;
         lableColor = Colors.grey;
         break;
+      case LessonState.needReview:
+        labelText = _s.need_review;
+        lableColor = kReviewLableColor;
+        break;
       default:
+        lableColor = Colors.grey;
         labelText = '';
     }
-    final iconText =
-        lessonPre.kanjiList.first.kanjikata.toString().characters.first;
-    final title = 'data';
-    final kanjiPre = lessonPre.kanjiList
-        .map((e) => e.kanjikata)
+    final iconText = lessonPre.wordList.first.word.toString().characters.first;
+    final title = '${_s.lesson} ${lessonPre.lessonID + 1}';
+    final kanjiPre = lessonPre.wordList
+        .map((e) => e.word)
         .toString()
         .substring(1)
         .replaceAll(')', '');

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
+import 'package:kanji_remake/generated/l10n.dart';
+import 'package:kanji_remake/theme.dart';
 
 class MyAnimatedSized extends StatefulWidget {
   const MyAnimatedSized({Key? key, required this.child}) : super(key: key);
@@ -20,15 +21,6 @@ class _MyAnimatedSizedState extends State<MyAnimatedSized>
       vsync: this,
       child: widget.child,
     );
-  }
-}
-
-class AnimationHook extends HookWidget {
-  const AnimationHook({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
@@ -59,7 +51,7 @@ class ChooseKanjiButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed(e),
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.all(0),
+            padding: EdgeInsets.all(kSmallPaddding),
             primary: isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
             textStyle: TextStyle(
               fontSize: height,
@@ -95,6 +87,19 @@ class RadioGroupWithTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locale = S.of(context);
+    late final optionString;
+    if (options.first is SpeechSpeed) {
+      optionString = options
+          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
+          .toList();
+    }
+    if (options.first is ReviewQuestionOrder) {
+      optionString = options
+          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
+          .toList();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -126,8 +131,10 @@ class RadioGroupWithTabBar extends StatelessWidget {
                   for (var item in options)
                     FittedBox(
                       child: Text(
-                        item.toString().split('.').last,
-                        style: TextStyle(fontSize: kSmallerText),
+                        optionString[options.indexOf(item)],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: kSmallerText),
                       ),
                     )
                 ],
@@ -159,6 +166,7 @@ class CustomRadioGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = S.of(context);
     final padding = MediaQuery.of(context).viewInsets;
     print(padding.left);
     final width = MediaQuery.of(context).size.width -
@@ -174,6 +182,19 @@ class CustomRadioGroup extends StatelessWidget {
       }
       fixedOptions.add(0);
     }
+
+    late final optionString;
+    if (options.first is SpeechSpeed) {
+      optionString = options
+          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
+          .toList();
+    }
+    if (options.first is ReviewQuestionOrder) {
+      optionString = options
+          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
+          .toList();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -220,7 +241,7 @@ class CustomRadioGroup extends StatelessWidget {
                                 vertical: kSmallPaddding),
                             child: Center(
                               child: Text(
-                                item.toString().split('.').last,
+                                optionString[options.indexOf(item)],
                                 maxLines: 1,
                                 overflow: TextOverflow.fade,
                                 style: TextStyle(
@@ -253,6 +274,8 @@ class MyDialogContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
+      backgroundColor: kDialogBgColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kNormalRadius),
       ),
@@ -265,6 +288,51 @@ class MyDialogContainer extends StatelessWidget {
                   fontSize: kNormalText),
           child: content ?? Container()),
       actions: actions,
+    );
+  }
+}
+
+class MyOutlineTextButton extends StatelessWidget {
+  const MyOutlineTextButton({
+    Key? key,
+    required this.onTap,
+    required this.text,
+    this.fill,
+    this.color,
+    this.textColor,
+  }) : super(key: key);
+
+  final String text;
+  final Function onTap;
+  final bool? fill;
+  final Color? color, textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Center(
+      child: SizedBox(
+        width: size.width * 0.5,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: color,
+            padding: EdgeInsets.zero,
+            side: BorderSide(color: color ?? kPrymaryColor, width: 1.2),
+          ),
+          onPressed: () async {
+            await onTap();
+          },
+          child: FittedBox(
+            child: Text(
+              text,
+              style: whiteSubTitleText.copyWith(
+                  color: textColor ?? kPrymaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: kSmallText),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

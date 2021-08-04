@@ -1,13 +1,16 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/page/lesson_page/lesson_page.dart';
-import 'package:kanji_remake/page/question_page/quesition_page.dart';
-import 'package:kanji_remake/page/start_page/page.dart';
+import 'package:kanji_remake/page/lesson_page/page_lesson.dart';
+import 'package:kanji_remake/page/level_page/page_level.dart';
+import 'package:kanji_remake/page/question_page/page_question.dart';
+import 'package:kanji_remake/page/splash_page/page_splash.dart';
 import 'package:kanji_remake/theme.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -40,7 +43,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: MyHomePage(title: 'Home Page'),
       routes: {
-        '/': (context) => StartPage(),
+        '/': (context) => SplashPage(),
         '/lesson': (context) => LessonPage(),
         '/learning': (context) => QuestionPage(),
       },

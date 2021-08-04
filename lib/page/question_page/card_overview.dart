@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/page/question_page/quesition_page.dart';
+import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/theme.dart';
 
@@ -39,7 +39,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
           ),
           FittedBox(
             child: Text(
-              currentKanjiWord.kanjikata ?? 'no Kanjikata',
+              currentKanjiWord.word,
             ),
           ),
           SizedBox(
@@ -54,7 +54,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
             height: subtitleHeight,
             child: FittedBox(
               child: Text(
-                currentKanjiWord.enMeaning ?? 'no Kanjikata',
+                currentKanjiWord.meanings?.take(2).toString() ?? 'no Kanjikata',
                 style: Theme.of(context)
                     .textTheme
                     .headline3!

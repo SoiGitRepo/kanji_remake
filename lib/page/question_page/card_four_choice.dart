@@ -4,7 +4,7 @@ import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/model/kanji_word.dart';
-import 'package:kanji_remake/page/question_page/quesition_page.dart';
+import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/utils/util.dart';
 
@@ -22,8 +22,6 @@ class FourChoiceCard extends QuestionCardBlock {
     final buttonEnableList = useProvider(_buttonEnableProvider);
     final allButtonChoices = useProvider(allChoicesProvider);
     final currentCard = useProvider(currentQuestionCardProvider);
-    final currentProgress = useProvider(currentProgressProvider);
-    final haveTakenWrongOne = useProvider(ifTokeWrongProvider);
 
     final S appLocalizations = S.of(context);
     final Size size = MediaQuery.of(context).size;
@@ -34,7 +32,7 @@ class FourChoiceCard extends QuestionCardBlock {
     final ifChoosingHiragana = kanjiFieldAsking == KanjiField.hiragana;
     final currentAnswer = ifChoosingHiragana
         ? currentCard.kanjiWord.hiragana
-        : currentCard.kanjiWord.enMeaning;
+        : currentCard.kanjiWord.meanings?.toString() ?? "";
 
     onThisPass() {
       onPass!();
@@ -71,7 +69,7 @@ class FourChoiceCard extends QuestionCardBlock {
                   height: titleHeight,
                   child: FittedBox(
                     child: Text(
-                      currentCard.kanjiWord.kanjikata ?? 'no Kanjikata',
+                      currentCard.kanjiWord.word,
                     ),
                   ),
                 ),
@@ -83,7 +81,9 @@ class FourChoiceCard extends QuestionCardBlock {
                         child: FittedBox(
                           child: Text(
                             ifChoosingHiragana
-                                ? currentCard.kanjiWord.enMeaning ??
+                                ? currentCard.kanjiWord.meanings
+                                        ?.take(2)
+                                        .toString() ??
                                     'no hiragana'
                                 : currentCard.kanjiWord.hiragana ??
                                     'no english Meaning',
@@ -130,11 +130,3 @@ class FourChoiceCard extends QuestionCardBlock {
     );
   }
 }
-
-final showSubTitle = Provider<bool>((ref) {
-  final currentFieldProgress = ref.watch(currentFieldProgressProvider);
-  if (currentFieldProgress.state == 0) {
-    return false;
-  }
-  return true;
-});

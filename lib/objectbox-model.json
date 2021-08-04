@@ -1,0 +1,112 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6013326552947721953",
+      "lastPropertyId": "8:6132367039010874602",
+      "name": "Kanji",
+      "properties": [
+        {
+          "id": "1:6092875017152648253",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9175110794765369416",
+          "name": "literal",
+          "type": 9
+        },
+        {
+          "id": "3:4510642499073362877",
+          "name": "jaOn",
+          "type": 9
+        },
+        {
+          "id": "4:694369145161198043",
+          "name": "ucs",
+          "type": 6
+        },
+        {
+          "id": "5:8411010255148585222",
+          "name": "jlpt",
+          "type": 6
+        },
+        {
+          "id": "6:353431235630660828",
+          "name": "strokeCount",
+          "type": 6
+        },
+        {
+          "id": "7:1612133419061402208",
+          "name": "meanings",
+          "type": 30
+        },
+        {
+          "id": "8:6132367039010874602",
+          "name": "correctOfTen",
+          "type": 6
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:8935128665449788901",
+          "name": "relatedWords",
+          "targetId": "2:821450214215473898"
+        }
+      ]
+    },
+    {
+      "id": "2:821450214215473898",
+      "lastPropertyId": "6:7227817693148405107",
+      "name": "KanjiWord",
+      "properties": [
+        {
+          "id": "1:7838593967864220382",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4472376934458841127",
+          "name": "word",
+          "type": 9
+        },
+        {
+          "id": "3:7379327837580663691",
+          "name": "hiragana",
+          "type": 9
+        },
+        {
+          "id": "4:1136121332813899236",
+          "name": "meanings",
+          "type": 30
+        },
+        {
+          "id": "5:43703195215325709",
+          "name": "lastTimePass",
+          "type": 10
+        },
+        {
+          "id": "6:7227817693148405107",
+          "name": "jlpt",
+          "type": 6
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:821450214215473898",
+  "lastIndexId": "0:0",
+  "lastRelationId": "1:8935128665449788901",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

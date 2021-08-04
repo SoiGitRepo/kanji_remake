@@ -149,6 +149,256 @@ class S {
       args: [],
     );
   }
+
+  /// `Please let me know if you have any questions, suggestions, bug reports or feature requests.`
+  String get feedback_note {
+    return Intl.message(
+      'Please let me know if you have any questions, suggestions, bug reports or feature requests.',
+      name: 'feedback_note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message(
+      'Send',
+      name: 'send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Empty Body`
+  String get empty_field_error {
+    return Intl.message(
+      'Empty Body',
+      name: 'empty_field_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Detected As An Email`
+  String get not_email_error {
+    return Intl.message(
+      'Not Detected As An Email',
+      name: 'not_email_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(Optional)`
+  String get optional {
+    return Intl.message(
+      '(Optional)',
+      name: 'optional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get message {
+    return Intl.message(
+      'Message',
+      name: 'message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Email Address`
+  String get your_email_address {
+    return Intl.message(
+      'Your Email Address',
+      name: 'your_email_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't Save`
+  String get dont_save {
+    return Intl.message(
+      'Don\'t Save',
+      name: 'dont_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Edit?`
+  String get ask_save_edit {
+    return Intl.message(
+      'Save Edit?',
+      name: 'ask_save_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speech Speed`
+  String get speech_speed {
+    return Intl.message(
+      'Speech Speed',
+      name: 'speech_speed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Off`
+  String get off {
+    return Intl.message(
+      'Off',
+      name: 'off',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Slow`
+  String get slow {
+    return Intl.message(
+      'Slow',
+      name: 'slow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medium`
+  String get medium {
+    return Intl.message(
+      'Medium',
+      name: 'medium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fast`
+  String get fast {
+    return Intl.message(
+      'Fast',
+      name: 'fast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review Question Order`
+  String get review_order {
+    return Intl.message(
+      'Review Question Order',
+      name: 'review_order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English First`
+  String get eng_first {
+    return Intl.message(
+      'English First',
+      name: 'eng_first',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Japanese First`
+  String get jp_first {
+    return Intl.message(
+      'Japanese First',
+      name: 'jp_first',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Random`
+  String get random {
+    return Intl.message(
+      'Random',
+      name: 'random',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review Frequency`
+  String get review_fre {
+    return Intl.message(
+      'Review Frequency',
+      name: 'review_fre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less`
+  String get less {
+    return Intl.message(
+      'Less',
+      name: 'less',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More`
+  String get more {
+    return Intl.message(
+      'More',
+      name: 'more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send FeedBack`
+  String get send_feedback {
+    return Intl.message(
+      'Send FeedBack',
+      name: 'send_feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson`
+  String get lesson {
+    return Intl.message(
+      'Lesson',
+      name: 'lesson',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
