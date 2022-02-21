@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
@@ -5,8 +7,12 @@ import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/theme.dart';
 
 class MyAnimatedSized extends StatefulWidget {
-  const MyAnimatedSized({Key? key, required this.child}) : super(key: key);
+  const MyAnimatedSized(
+      {Key? key, required this.child, this.duration, this.curve})
+      : super(key: key);
   final Widget child;
+  final Duration? duration;
+  final Curve? curve;
 
   @override
   _MyAnimatedSizedState createState() => _MyAnimatedSizedState();
@@ -17,7 +23,8 @@ class _MyAnimatedSizedState extends State<MyAnimatedSized>
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: kDuration,
+      duration: widget.duration ?? kDuration,
+      curve: widget.curve ?? Curves.linear,
       vsync: this,
       child: widget.child,
     );
@@ -264,16 +271,23 @@ class CustomRadioGroup extends StatelessWidget {
 
 class MyDialogContainer extends StatelessWidget {
   const MyDialogContainer(
-      {Key? key, this.content, this.actions, this.defaultTextStyle})
+      {Key? key,
+      this.child,
+      this.actions,
+      this.defaultTextStyle,
+      this.elevation})
       : super(key: key);
 
-  final Widget? content;
+  final Widget? child;
   final List<Widget>? actions;
   final TextStyle? defaultTextStyle;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return AlertDialog(
+      elevation: elevation,
       scrollable: true,
       backgroundColor: kDialogBgColor,
       shape: RoundedRectangleBorder(
@@ -286,7 +300,7 @@ class MyDialogContainer extends StatelessWidget {
                   color: kPrymaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: kNormalText),
-          child: content ?? Container()),
+          child: SizedBox(width: size.width, child: child ?? Container())),
       actions: actions,
     );
   }
@@ -295,16 +309,18 @@ class MyDialogContainer extends StatelessWidget {
 class MyOutlineTextButton extends StatelessWidget {
   const MyOutlineTextButton({
     Key? key,
-    required this.onTap,
+    this.onTap,
     required this.text,
     this.fill,
     this.color,
     this.textColor,
+    this.enable = true,
   }) : super(key: key);
 
   final String text;
-  final Function onTap;
+  final void Function()? onTap;
   final bool? fill;
+  final bool enable;
   final Color? color, textColor;
 
   @override
@@ -315,13 +331,12 @@ class MyOutlineTextButton extends StatelessWidget {
         width: size.width * 0.5,
         child: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: color,
+            primary: color ?? kPrymaryColor,
+            backgroundColor: fill ?? false ? color : null,
             padding: EdgeInsets.zero,
             side: BorderSide(color: color ?? kPrymaryColor, width: 1.2),
           ),
-          onPressed: () async {
-            await onTap();
-          },
+          onPressed: enable ? onTap : null,
           child: FittedBox(
             child: Text(
               text,
@@ -333,6 +348,57 @@ class MyOutlineTextButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MySingleLineTextFormFieldWithTitle extends StatelessWidget {
+  const MySingleLineTextFormFieldWithTitle(
+      {Key? key,
+      this.validator,
+      this.onChanged,
+      this.controller,
+      this.title,
+      this.enable = true,
+      this.autofocus,
+      required this.formKey})
+      : super(key: key);
+
+  final String? Function(String?)? validator;
+  final Function(String)? onChanged;
+  final TextEditingController? controller;
+  final String? title;
+  final bool enable;
+  final bool? autofocus;
+  final GlobalKey formKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title ?? ""),
+        SizedBox(
+          height: kSmallPaddding,
+        ),
+        Form(
+          key: formKey,
+          child: TextFormField(
+            autofocus: autofocus ?? false,
+            enabled: enable,
+            validator: validator,
+            onChanged: onChanged,
+            controller: controller,
+            cursorColor: kCursorColor,
+            maxLines: 1,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: kSmallPaddding),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

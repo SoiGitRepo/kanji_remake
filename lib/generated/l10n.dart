@@ -190,6 +190,16 @@ class S {
     );
   }
 
+  /// `Not Longer Than 8`
+  String get psw_short_error {
+    return Intl.message(
+      'Not Longer Than 8',
+      name: 'psw_short_error',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `(Optional)`
   String get optional {
     return Intl.message(

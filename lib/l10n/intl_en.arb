@@ -13,6 +13,7 @@
     "send":"Send",
     "empty_field_error":"Empty Body",
     "not_email_error":"Not Detected As An Email",
+    "psw_short_error":"Not Longer Than 8",
     "optional":"(Optional)",
     "message":"Message",
     "your_email_address":"Your Email Address",

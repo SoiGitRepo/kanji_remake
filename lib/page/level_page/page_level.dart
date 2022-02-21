@@ -20,8 +20,12 @@ class LevelPage extends HookWidget {
   }
 
   Widget buildBody(BuildContext context, List<Level> list) {
+    final size = MediaQuery.of(context).size;
+    final horiOrVerti = size.width > size.height;
     return Center(
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: horiOrVerti ? Axis.horizontal : Axis.vertical,
         addAutomaticKeepAlives: true,
         itemCount: list.length,
         itemBuilder: (context, index) {
@@ -29,7 +33,7 @@ class LevelPage extends HookWidget {
             return GestureDetector(
               onTap: () {
                 print('choosing level');
-                setCurrentLessonList(watch, index + 1);
+                setCurrentLessonList(watch, index);
                 navigateToLesson(context);
               },
               child: WidgetLevelEntry(
@@ -46,7 +50,7 @@ class LevelPage extends HookWidget {
     print('getting lesson');
     final lessonList = watch(lessonsListProvider);
     final LessonRepository lessonRepo = watch(lessonRepoProvider);
-    lessonList.state = await lessonRepo.getAllLessonWithJlpt(jlpt);
+    lessonList.state = await lessonRepo.getAllLessonWithJlpt(5 - jlpt);
   }
 
   void navigateToLesson(BuildContext context) {

@@ -46,7 +46,7 @@ class SendFeedBackPage extends HookWidget {
     msgController.text = msgProvider.state;
 
     return MyDialogContainer(
-      content: Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -144,7 +144,7 @@ class SendFeedBackPage extends HookWidget {
                     if (text == null || text.isEmpty || text.isValidEmail()) {
                       return null;
                     }
-
+                    ;
                     return locale.not_email_error;
                   },
                   onChanged: (text) {

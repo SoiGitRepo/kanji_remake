@@ -9,7 +9,7 @@ import 'package:kanji_remake/page/question_page/card_kanji_choice.dart';
 import 'package:kanji_remake/page/question_page/card_overview.dart';
 import 'package:kanji_remake/page/question_page/card_four_choice.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
-import 'package:kanji_remake/page/question_page/dialog_setting_menu.dart';
+import 'package:kanji_remake/page/setting_dialog/setting_general.dart';
 import 'package:kanji_remake/repo/lesso_repo.dart';
 import 'package:kanji_remake/theme.dart';
 import 'package:kanji_remake/utils/objectbox_hook.dart';

@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/page/question_page/dialog_send_feedback.dart';
+import 'package:kanji_remake/page/setting_dialog/feedback/setting_send_feedback.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 
 class SettingDialog extends HookWidget {
@@ -40,7 +40,7 @@ class SettingDialog extends HookWidget {
     }
 
     return MyDialogContainer(
-      content: Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

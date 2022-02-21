@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Not Detected As An Email"),
         "off": MessageLookupByLibrary.simpleMessage("Off"),
         "optional": MessageLookupByLibrary.simpleMessage("(Optional)"),
+        "psw_short_error":
+            MessageLookupByLibrary.simpleMessage("Not Longer Than 8"),
         "random": MessageLookupByLibrary.simpleMessage("Random"),
         "ready_to_learn":
             MessageLookupByLibrary.simpleMessage("Ready To Learn"),

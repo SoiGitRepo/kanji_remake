@@ -6,6 +6,6 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });
 
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
+final authServiceProvider = Provider<AuthServiceImpl>((ref) {
+  return AuthServiceImpl();
 });

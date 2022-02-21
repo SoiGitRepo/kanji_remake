@@ -21,8 +21,9 @@ class WidgetLevelEntry extends StatelessWidget {
     final S _appLocalizations = S.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(kNormalPaddding),
+      padding: const EdgeInsets.all(kBigPaddding),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             decoration: BoxDecoration(

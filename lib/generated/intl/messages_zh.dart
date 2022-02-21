@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_email_error": MessageLookupByLibrary.simpleMessage("未识别到邮箱格式"),
         "off": MessageLookupByLibrary.simpleMessage("无"),
         "optional": MessageLookupByLibrary.simpleMessage("（可选）"),
+        "psw_short_error": MessageLookupByLibrary.simpleMessage("不足8位"),
         "random": MessageLookupByLibrary.simpleMessage("随机"),
         "ready_to_learn": MessageLookupByLibrary.simpleMessage("可以学习"),
         "review": MessageLookupByLibrary.simpleMessage("复习"),

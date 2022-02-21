@@ -11,10 +11,14 @@ const TextStyle whiteSubTitleText =
     TextStyle(fontSize: 20.0, color: Colors.white);
 const TextStyle whiteLableText =
     TextStyle(fontSize: kNormalText, color: Colors.white);
+final TextStyle whiteLable2Text = TextStyle(
+    fontSize: kSmallText, color: Colors.grey[850], fontWeight: FontWeight.w300);
 const TextStyle whiteBody1Text =
     TextStyle(fontSize: kSmallText, color: Colors.white);
 const TextStyle whiteBody2Text =
     TextStyle(fontSize: kSmallerText, color: Colors.white);
+const TextStyle blueBody1Text =
+    TextStyle(fontSize: kSmallText, color: kButtonBgColor2);
 
 final ButtonStyle kNormalButtonStyle = ElevatedButton.styleFrom(
   elevation: 4,

@@ -17,7 +17,7 @@ class LessonPage extends StatelessWidget {
         child: Column(
           children: [
             header(context),
-            lessonList(),
+            lessonList(context),
           ],
         ),
       ),
@@ -29,6 +29,8 @@ class LessonPage extends StatelessWidget {
       Navigator.pop(context);
     }
   }
+
+  void navigateToKanjiOverview() {}
 
   Widget header(BuildContext context) {
     final S _appLocalizations = S.of(context);
@@ -76,7 +78,7 @@ class LessonPage extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            popThisPageOut(context);
+            Navigator.pushNamed(context, '/kanji_overview');
           },
           icon: const Icon(Icons.apps_rounded),
         ),
@@ -84,7 +86,7 @@ class LessonPage extends StatelessWidget {
     );
   }
 
-  Widget lessonList() {
+  Widget lessonList(BuildContext context) {
     return Expanded(
       child: Consumer(
         builder: (context, watch, child) {
@@ -92,7 +94,8 @@ class LessonPage extends StatelessWidget {
           final length = lessons.length;
 
           return ListView.builder(
-            itemCount: length,
+            physics: const BouncingScrollPhysics(),
+            itemCount: length - 1,
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {

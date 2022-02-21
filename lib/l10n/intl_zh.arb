@@ -13,6 +13,7 @@
     "send":"发送",
     "empty_field_error":"未填写内容",
     "not_email_error":"未识别到邮箱格式",
+    "psw_short_error":"不足8位",
     "message":"反馈内容",
     "optional":"（可选）",
     "your_email_address":"您的邮箱地址",
