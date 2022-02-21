@@ -33,21 +33,21 @@ enum AuthEvent {
   forgetPassword,
 }
 
-class AuthRoute extends HookWidget {
+class AuthRoute extends HookConsumerWidget {
   const AuthRoute({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final authEvent = useProvider(authEventProvider);
-    final authViewMode = useProvider(authViewModelProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authEvent = ref.watch(authEventProvider);
+    final authViewMode = ref.watch(authViewModelProvider);
 
     resetEvent() {
-      context.read(authEventProvider).state = AuthEvent.root;
+      ref.read(authEventProvider.notifier).state = AuthEvent.root;
       authViewMode.clearErrorText();
     }
 
     cancelSync() {
-      context.read(syncViewModelProvider).toggleSyncState(false);
+      ref.read(syncViewModelProvider.notifier).toggleSyncState(false);
     }
 
     return MyDialogContainer(
@@ -56,7 +56,7 @@ class AuthRoute extends HookWidget {
           alignment: Alignment.centerRight,
           child: GestureDetector(
             onTap: () {
-              if (authEvent.state == AuthEvent.root) {
+              if (authEvent == AuthEvent.root) {
                 cancelSync();
               }
               resetEvent();
@@ -67,13 +67,13 @@ class AuthRoute extends HookWidget {
             ),
           ),
         ),
-        eventToUI(authEvent.state)
+        eventToUI(authEvent)
       ]),
     );
   }
 
-  updateEvent(BuildContext context, AuthEvent event) {
-    context.read(authEventProvider).state = event;
+  updateEvent(BuildContext context, WidgetRef ref, AuthEvent event) {
+    ref.read(authEventProvider.notifier).state = event;
   }
 
   Widget eventToUI(AuthEvent? event) {

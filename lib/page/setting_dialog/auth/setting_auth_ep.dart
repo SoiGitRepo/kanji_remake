@@ -11,20 +11,20 @@ import 'package:kanji_remake/page/setting_dialog/feedback/setting_send_feedback.
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 
-class AuthInfoFormPage extends HookWidget {
+class AuthInfoFormPage extends HookConsumerWidget {
   const AuthInfoFormPage({Key? key, required this.updateEvent})
       : super(key: key);
 
-  final Function(BuildContext, AuthEvent) updateEvent;
+  final Function(BuildContext, WidgetRef ref, AuthEvent) updateEvent;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = S.of(context);
     final formKey = GlobalKey<FormState>();
     final emailController = useTextEditingController();
     final pswController = useTextEditingController();
-    final authEventPro = useProvider(authEventProvider);
-    final authViewModel = useProvider(authViewModelProvider);
-    final isLoggingin = authEventPro.state == AuthEvent.signIn;
+    final authEventPro = ref.watch(authEventProvider);
+    final authViewModel = ref.watch(authViewModelProvider);
+    final isLoggingin = authEventPro == AuthEvent.signIn;
     final loading = useState(false);
     final focuesNode = useFocusNode();
 

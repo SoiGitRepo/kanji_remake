@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
@@ -17,7 +18,7 @@ class ChooseKanjiCard extends QuestionCardBlock {
       : super(onPass, onTokeWrong);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
     final labelHeight = size.height * kLabelHeightRTSH;
     final titleHeight = size.height * kTitleHeightRTSH;
@@ -28,15 +29,14 @@ class ChooseKanjiCard extends QuestionCardBlock {
             choiceHeight * 3 -
             kSmallPaddding * 2) /
         2;
-    final currentAnswerIndex = useProvider(_currentAnswerIndex);
-    final ifChosen = useProvider(_ifChosen);
-    final currentCard = useProvider(currentQuestionCardProvider);
+    final currentAnswerIndex = ref.read(_currentAnswerIndex);
+    final ifChosen = ref.watch(_ifChosen);
+    final currentCard = ref.watch(currentQuestionCardProvider);
 
     final S _appLocalizations = S.of(context);
-    final allButtonChoices = context.read(allChoicesProvider);
-    final currentKanjiWord =
-        context.read(currentQuestionCardProvider).kanjiWord;
-    final currentAnswerQueue = context.read(currentKanjikataQueue);
+    final allButtonChoices = ref.read(allChoicesProvider);
+    final currentKanjiWord = ref.read(currentQuestionCardProvider).kanjiWord;
+    final currentAnswerQueue = ref.read(currentKanjikataQueue);
     final ifDone = ifChosen
             .take(currentAnswerQueue.length)
             .where((element) => element)
@@ -55,7 +55,7 @@ class ChooseKanjiCard extends QuestionCardBlock {
     }
 
     bool isChosenAsCorrect(int index) {
-      return currentAnswerIndex.state >= index && ifChosen[index];
+      return currentAnswerIndex >= index && ifChosen[index];
     }
 
     double caculateChoiceButtonLeft(int index) {
@@ -77,12 +77,12 @@ class ChooseKanjiCard extends QuestionCardBlock {
     }
 
     void toggleChosen(int index) {
-      context.read(_ifChosen.notifier).toggle(index);
+      ref.read(_ifChosen.notifier).toggle(index);
     }
 
     void cancelOtherChosen() {
       allButtonChoices.forEach((element) {
-        if (element.key > currentAnswerIndex.state && ifChosen[element.key]) {
+        if (element.key > currentAnswerIndex && ifChosen[element.key]) {
           toggleChosen(element.key);
         }
       });
@@ -95,11 +95,10 @@ class ChooseKanjiCard extends QuestionCardBlock {
               ? null
               : () {
                   toggleChosen(e.key);
-                  if (currentAnswerIndex.state >= e.key) {
+                  if (currentAnswerIndex >= e.key) {
                     cancelOtherChosen();
-                    if (currentAnswerIndex.state <
-                        currentAnswerQueue.length - 1) {
-                      currentAnswerIndex.state++;
+                    if (currentAnswerIndex < currentAnswerQueue.length - 1) {
+                      ref.read(_currentAnswerIndex.notifier).state++;
                     }
                   } else {
                     onTokeWrong!();
@@ -274,6 +273,7 @@ final _currentAnswerIndex = StateProvider<int>((ref) {
   ref.watch(currentQuestionCardProvider);
   return 0;
 });
+
 final _ifChosen = StateNotifierProvider<ListBoolNotifier, List<bool>>((ref) {
   ref.watch(currentQuestionCardProvider);
   return ListBoolNotifier(List.generate(9, (index) => false));

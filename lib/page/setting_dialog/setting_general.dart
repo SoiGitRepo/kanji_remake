@@ -8,26 +8,26 @@ import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/setting_dialog/feedback/setting_send_feedback.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 
-class SettingDialog extends HookWidget {
+class SettingDialog extends HookConsumerWidget {
   const SettingDialog({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final locale = S.of(context);
-    final speechSpeed = useProvider(speechSpeedProvider);
-    final order = useProvider(reviewQuestionOrderProvider);
-    final frequency = useProvider(frequencyProvider);
+    final speechSpeed = ref.watch(speechSpeedProvider);
+    final order = ref.watch(reviewQuestionOrderProvider);
+    final frequency = ref.watch(frequencyProvider);
 
     void onChangeSpeechSpeed(SpeechSpeed speed) {
-      context.read(speechSpeedProvider).state = speed;
+      ref.read(speechSpeedProvider.notifier).state = speed;
     }
 
     void onChangeOrder(ReviewQuestionOrder order) {
-      context.read(reviewQuestionOrderProvider).state = order;
+      ref.read(reviewQuestionOrderProvider.notifier).state = order;
     }
 
     void onChangeFrequency(double percent) {
-      context.read(frequencyProvider.notifier).state = percent;
+      ref.read(frequencyProvider.notifier).state = percent;
     }
 
     jumpToSendFeedBack() async {
@@ -59,7 +59,7 @@ class SettingDialog extends HookWidget {
           CustomRadioGroup(
             title: locale.speech_speed,
             options: speechSpeedOptions,
-            initialIndex: speechSpeedOptions.indexOf(speechSpeed.state),
+            initialIndex: speechSpeedOptions.indexOf(speechSpeed),
             wrapContent: false,
             onChangeSelected: onChangeSpeechSpeed,
           ),
@@ -69,7 +69,7 @@ class SettingDialog extends HookWidget {
           RadioGroupWithTabBar(
             title: locale.review_order,
             options: reviewQuestionOrderOptions,
-            initialIndex: reviewQuestionOrderOptions.indexOf(order.state),
+            initialIndex: reviewQuestionOrderOptions.indexOf(order),
             onChangeSelected: onChangeOrder,
             wrapContent: false,
           ),
@@ -88,7 +88,7 @@ class SettingDialog extends HookWidget {
                     activeColor: kPrymaryColor,
                     inactiveColor: kRadioGroupColor,
                     max: 100,
-                    value: frequency.state,
+                    value: frequency,
                     onChanged: (percent) {
                       onChangeFrequency(percent.round().toDouble());
                     }),

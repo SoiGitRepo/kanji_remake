@@ -7,12 +7,12 @@ import 'package:kanji_remake/page/question_page/card_kanji_choice.dart';
 
 final currentLessonKanjiWordsProvider = StateProvider<List<KanjiWord>>((ref) {
   final lessonList = ref.watch(lessonsListProvider);
-  return lessonList.state.first.wordList;
+  return lessonList.first.wordList;
 });
 
 final currentQuestionOrderProvider =
     StateNotifierProvider<ListCardOrder, List<QuestionCard>>((ref) {
-  final kanjiWords = ref.watch(currentLessonKanjiWordsProvider).state;
+  final kanjiWords = ref.watch(currentLessonKanjiWordsProvider);
   final questionCardType;
   if (kanjiWords.length <= 4) {
     questionCardType = questionCardTypeSet;
@@ -58,29 +58,29 @@ final currentQuestionCardProvider = Provider<QuestionCard>((ref) {
   final order = ref.watch(currentQuestionOrderProvider);
   final index = ref.watch(currentProgressProvider);
   assert(order.length > 0);
-  if (index.state >= order.length)
+  if (index >= order.length)
     return QuestionCard(
       KanjiWord(word: "sample"),
       QuestionCardType.allDone,
       cardTypeToFieldMap[QuestionCardType.allDone] ?? [KanjiField.all],
     );
   else
-    return order[index.state];
+    return order[index];
 });
 
 final currentKanjiFieldAsking = Provider<KanjiField>((ref) {
   final currentCardFields =
       ref.watch(currentQuestionCardProvider).kanjiFieldAskingFor;
   final currentFieldProgress = ref.watch(currentFieldProgressProvider);
-  if (currentFieldProgress.state < currentCardFields.length) {
-    return currentCardFields[currentFieldProgress.state];
+  if (currentFieldProgress < currentCardFields.length) {
+    return currentCardFields[currentFieldProgress];
   }
   return KanjiField.none;
 });
 
 final allChoicesProvider = Provider<List>((ref) {
   final currentKanjiField = ref.watch(currentKanjiFieldAsking);
-  final currentKanjiWords = ref.watch(currentLessonKanjiWordsProvider).state;
+  final currentKanjiWords = ref.watch(currentLessonKanjiWordsProvider);
   final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
   final currentAnswerList = ref.watch(currentKanjikataQueue);
 
@@ -100,23 +100,23 @@ final allChoicesProvider = Provider<List>((ref) {
           .take(3)
           .map((e) => e.hiragana)
           .toList()
-            ..add(currentKanjiWord.hiragana)
-            ..shuffle();
+        ..add(currentKanjiWord.hiragana)
+        ..shuffle();
     case KanjiField.meaning:
       return currentKanjiWords
           .where((element) => element.word != currentKanjiWord.word)
           .take(3)
           .map((e) => e.meanings.toString())
           .toList()
-            ..add(currentKanjiWord.meanings.toString())
-            ..shuffle();
+        ..add(currentKanjiWord.meanings.toString())
+        ..shuffle();
     default:
       return [];
   }
 });
 final showSubTitle = Provider<bool>((ref) {
   final currentFieldProgress = ref.watch(currentFieldProgressProvider);
-  if (currentFieldProgress.state == 0) {
+  if (currentFieldProgress == 0) {
     return false;
   }
   return true;

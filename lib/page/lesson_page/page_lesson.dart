@@ -55,8 +55,8 @@ class LessonPage extends StatelessWidget {
                 child: Text(_appLocalizations.custom_review),
                 style: Theme.of(context).elevatedButtonTheme.style,
               ),
-              Consumer(builder: (context, watch, child) {
-                final lessonsToReview = watch(lessonNeedReview);
+              Consumer(builder: (context, ref, child) {
+                final lessonsToReview = ref.watch(lessonNeedReview);
                 return MyAnimatedSized(
                   child: SizedBox(
                     height: lessonsToReview.isNotEmpty ? null : 0,
@@ -89,8 +89,8 @@ class LessonPage extends StatelessWidget {
   Widget lessonList(BuildContext context) {
     return Expanded(
       child: Consumer(
-        builder: (context, watch, child) {
-          final lessons = watch(lessonsListProvider).state;
+        builder: (context, ref, child) {
+          final lessons = ref.watch(lessonsListProvider);
           final length = lessons.length;
 
           return ListView.builder(
@@ -99,7 +99,7 @@ class LessonPage extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    context.read(currentLessonKanjiWordsProvider).state =
+                    ref.read(currentLessonKanjiWordsProvider.state).state =
                         lessons[index].wordList;
                     Navigator.pushNamed(context, '/learning');
                   },

@@ -16,12 +16,12 @@ class FourChoiceCard extends QuestionCardBlock {
       : super(onPass, onTokeWrong);
 
   @override
-  Widget build(BuildContext context) {
-    final kanjiFieldAsking = useProvider(currentKanjiFieldAsking);
-    final ifShowSubTitle = useProvider(showSubTitle);
-    final buttonEnableList = useProvider(_buttonEnableProvider);
-    final allButtonChoices = useProvider(allChoicesProvider);
-    final currentCard = useProvider(currentQuestionCardProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final kanjiFieldAsking = ref.watch(currentKanjiFieldAsking);
+    final ifShowSubTitle = ref.watch(showSubTitle);
+    final buttonEnableList = ref.watch(_buttonEnableProvider) as List;
+    final allButtonChoices = ref.watch(allChoicesProvider);
+    final currentCard = ref.watch(currentQuestionCardProvider);
 
     final S appLocalizations = S.of(context);
     final Size size = MediaQuery.of(context).size;
@@ -36,12 +36,12 @@ class FourChoiceCard extends QuestionCardBlock {
 
     onThisPass() {
       onPass!();
-      context.read(_buttonEnableProvider.notifier).setAllto(true);
+      ref.read(_buttonEnableProvider.notifier).setAllto(true);
     }
 
     onTakenWrongAnswer(index) {
       onTokeWrong!();
-      context.read(_buttonEnableProvider.notifier).toggle(index);
+      ref.read(_buttonEnableProvider.notifier).toggle(index);
     }
 
     return DefaultTextStyle(

@@ -15,7 +15,7 @@ import 'package:kanji_remake/theme.dart';
 import 'package:kanji_remake/utils/objectbox_hook.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class QuestionPage extends StatelessWidget {
+class QuestionPage extends HookConsumerWidget {
   const QuestionPage({
     Key? key,
   }) : super(key: key);
@@ -29,7 +29,7 @@ class QuestionPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ///用于更新kanji词语最新学习通过时间的函数
     ///
     ///接收一个[KanjiWord]参数并更新其属性[lastTimePass]
@@ -46,20 +46,18 @@ class QuestionPage extends StatelessWidget {
     ///当前课程的问题进度 [currentQuestionCardProvider]
     ///当前kanji词语的最新学习通过时间 [currentQuestionCardProvider]
     void onPass() {
-      final fieldProgress = context.read(currentFieldProgressProvider);
-      final currentCard = context.read(currentQuestionCardProvider);
-      final progress = context.read(currentProgressProvider);
-      final tokeWrong = context.read(ifTokeWrongProvider);
+      final fieldProgress = ref.read(currentFieldProgressProvider.notifier);
+      final currentCard = ref.read(currentQuestionCardProvider);
+      final progress = ref.read(currentProgressProvider.notifier);
+      final tokeWrong = ref.read(ifTokeWrongProvider.notifier);
 
       if (fieldProgress.state < currentCard.kanjiFieldAskingFor.length - 1) {
         fieldProgress.state++;
       } else {
         if (tokeWrong.state) {
           print("adding last card ");
-          context
-              .read(currentQuestionOrderProvider.notifier)
-              .removeAt(progress.state);
-          context.read(currentQuestionOrderProvider.notifier).add(currentCard);
+          ref.read(currentQuestionOrderProvider.notifier).removeAt(progress);
+          ref.read(currentQuestionOrderProvider.notifier).add(currentCard);
           tokeWrong.state = false;
         } else {
           progress.state++;
@@ -71,7 +69,7 @@ class QuestionPage extends StatelessWidget {
 
     void onTokeWrong() {
       print("u toke wrong one ");
-      context.read(ifTokeWrongProvider).state = true;
+      ref.read(ifTokeWrongProvider.notifier).state = true;
     }
 
     return Scaffold(
@@ -87,7 +85,8 @@ class QuestionPage extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: kNormalPaddding),
                     child: Consumer(builder: (context, watch, child) {
-                      final currentKanjiField = watch(currentKanjiFieldAsking);
+                      final currentKanjiField =
+                          ref.watch(currentKanjiFieldAsking);
                       switch (currentKanjiField) {
                         case KanjiField.all:
                           return KanjiOverviewCard(onPass, onTokeWrong);
@@ -133,9 +132,9 @@ class QuestionPage extends StatelessWidget {
       const SizedBox(
         width: kSmallPaddding,
       ),
-      Consumer(builder: (context, watch, child) {
-        final currentProgress = watch(currentProgressProvider).state;
-        final currentOrder = watch(currentQuestionOrderProvider);
+      Consumer(builder: (context, ref, child) {
+        final currentProgress = ref.watch(currentProgressProvider);
+        final currentOrder = ref.watch(currentQuestionOrderProvider);
         final percentage = currentProgress / currentOrder.length;
         return Expanded(
           child: LinearPercentIndicator(
@@ -162,7 +161,7 @@ class QuestionPage extends StatelessWidget {
   }
 }
 
-abstract class QuestionCardBlock extends HookWidget {
+abstract class QuestionCardBlock extends HookConsumerWidget {
   final void Function()? onPass;
   final void Function()? onTokeWrong;
 

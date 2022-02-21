@@ -29,7 +29,7 @@ abstract class AuthViewModel extends ChangeNotifier {
 }
 
 class AuthViewModelImpl extends AuthViewModel {
-  late bool _ifLoggedIn;
+  bool _ifLoggedIn = false;
   String? _email;
   String? _password;
   String? _errorText;

@@ -6,18 +6,18 @@ import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 
-class AccountSetting extends HookWidget {
+class AccountSetting extends HookConsumerWidget {
   const AccountSetting({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void popThisPageOut() {
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
       }
     }
 
-    final _viewmodel = useProvider(_accountSettingViewModelProvider);
+    final _viewmodel = ref.watch(_accountSettingViewModelProvider);
     return MyDialogContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

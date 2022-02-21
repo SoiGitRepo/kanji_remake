@@ -9,7 +9,7 @@ final lessonsListProvider = StateProvider<List<LessonPre>>(
 
 final lessonNeedReview = Provider<List<LessonPre>>(
   (ref) {
-    final lessonsList = ref.watch(lessonsListProvider).state;
+    final lessonsList = ref.watch(lessonsListProvider);
     return lessonsList
         .where((element) => element.state == LessonState.needReview)
         .toList();

@@ -11,14 +11,14 @@ import 'package:kanji_remake/page/setting_dialog/sync/sync_view_model.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 
-class SyncPage extends HookWidget {
+class SyncPage extends HookConsumerWidget {
   const SyncPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final _syncViewModel = useProvider(syncViewModelProvider);
-    final _authViewModel = useProvider(authViewModelProvider);
-    final authEventPro = useProvider(authEventProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _syncViewModel = ref.watch(syncViewModelProvider);
+    final _authViewModel = ref.watch(authViewModelProvider);
+    final authEventPro = ref.read(authEventProvider.notifier);
     final ifSync = _syncViewModel.ifSync && _authViewModel.user != null;
 
     void popThisPageOut() {

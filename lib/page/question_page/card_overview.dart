@@ -12,13 +12,13 @@ class KanjiOverviewCard extends QuestionCardBlock {
       : super(onPass, onTokeWrong);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final S _appLocalizations = S.of(context);
     final Size size = MediaQuery.of(context).size;
     final labelHeight = size.height * kLabelHeightRTSH;
     final titleHeight = size.height * kTitleHeightRTSH;
     final subtitleHeight = size.height * kSubtitleHeightRTSH;
-    final currentKanjiWord = useProvider(currentQuestionCardProvider).kanjiWord;
+    final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
 
     return DefaultTextStyle(
       style: TextStyle(color: Colors.white, fontSize: titleHeight),

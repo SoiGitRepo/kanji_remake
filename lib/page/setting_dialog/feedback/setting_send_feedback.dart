@@ -6,44 +6,44 @@ import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 
-class SendFeedBackPage extends HookWidget {
+class SendFeedBackPage extends HookConsumerWidget {
   const SendFeedBackPage({Key? key}) : super(key: key);
 
-  saveEditState({required BuildContext context, String? email, String? msg}) {
-    saveEmailState(context: context, email: email ?? "");
-    saveMsgState(context: context, msg: msg ?? "");
+  saveEditState({required WidgetRef ref, String? email, String? msg}) {
+    saveEmailState(ref: ref, email: email ?? "");
+    saveMsgState(ref: ref, msg: msg ?? "");
   }
 
   saveEmailState({
-    required BuildContext context,
+    required WidgetRef ref,
     required String email,
   }) {
-    context.read(feedBackEmailProvider).state = email;
+    ref.read(feedBackEmailProvider.notifier).state = email;
   }
 
   saveMsgState({
-    required BuildContext context,
+    required WidgetRef ref,
     required String msg,
   }) {
-    context.read(feedBackMsgProvider).state = msg;
+    ref.read(feedBackMsgProvider.notifier).state = msg;
   }
 
-  clearEditState({required BuildContext context}) {
-    context.read(feedBackEmailProvider).state = "";
-    context.read(feedBackMsgProvider).state = "";
+  clearEditState({required WidgetRef ref}) {
+    ref.read(feedBackEmailProvider.notifier).state = "";
+    ref.read(feedBackMsgProvider.notifier).state = "";
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = S.of(context);
-    final emailProvider = useProvider(feedBackEmailProvider);
-    final msgProvider = useProvider(feedBackMsgProvider);
+    final emailProvider = ref.watch(feedBackEmailProvider);
+    final msgProvider = ref.watch(feedBackMsgProvider);
     final emailController = useTextEditingController();
     final msgController = useTextEditingController();
     final formKey = GlobalKey<FormState>();
     final checkingIfSaveState = useState(false);
-    emailController.text = emailProvider.state;
-    msgController.text = msgProvider.state;
+    emailController.text = emailProvider;
+    msgController.text = msgProvider;
 
     return MyDialogContainer(
       child: Column(
@@ -82,7 +82,7 @@ class SendFeedBackPage extends HookWidget {
                         if (emailController.text.isNotEmpty ||
                             msgController.text.isNotEmpty) {
                           saveEditState(
-                            context: context,
+                            ref: ref,
                             email: emailController.text,
                             msg: msgController.text,
                           );
@@ -117,7 +117,7 @@ class SendFeedBackPage extends HookWidget {
                         Expanded(
                             child: MyOutlineTextButton(
                           onTap: () {
-                            clearEditState(context: context);
+                            clearEditState(ref: ref);
                             Navigator.pop(context);
                           },
                           text: locale.dont_save,

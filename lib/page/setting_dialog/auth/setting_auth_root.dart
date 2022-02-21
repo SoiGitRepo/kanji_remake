@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/theme.dart';
 
-class AuthRootPage extends StatelessWidget {
+class AuthRootPage extends HookConsumerWidget {
   const AuthRootPage({
     Key? key,
     required this.updateEvent,
   }) : super(key: key);
-  final Function(BuildContext, AuthEvent) updateEvent;
+  final Function(BuildContext, WidgetRef, AuthEvent) updateEvent;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Text(
@@ -31,14 +32,14 @@ class AuthRootPage extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              updateEvent(context, AuthEvent.signUp);
+              updateEvent(context, ref, AuthEvent.signUp);
             },
             child: Text('创建新账户',
                 style: TextStyle(
                     fontSize: kSmallText, fontWeight: FontWeight.normal))),
         ElevatedButton(
             onPressed: () {
-              updateEvent(context, AuthEvent.signIn);
+              updateEvent(context, ref, AuthEvent.signIn);
             },
             child: Text('登录',
                 style: TextStyle(

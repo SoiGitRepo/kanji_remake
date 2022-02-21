@@ -9,14 +9,14 @@ import 'package:kanji_remake/page/setting_dialog/sync/setting_sync.dart';
 import 'package:kanji_remake/page/setting_dialog/sync/sync_view_model.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 
-class SyncRoute extends HookWidget {
+class SyncRoute extends HookConsumerWidget {
   const SyncRoute({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final size = MediaQuery.of(context).size;
-    final syncViewModel = useProvider(syncViewModelProvider);
-    final authViewModel = useProvider(authViewModelProvider);
+    final syncViewModel = ref.watch(syncViewModelProvider);
+    final authViewModel = ref.watch(authViewModelProvider);
     print("sync:${syncViewModel.ifSync} - user:${authViewModel.ifLoggedIn}");
 
     late final content;

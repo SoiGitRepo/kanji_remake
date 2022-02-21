@@ -16,15 +16,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.0.1
   firebase_core: ^1.4.0
-  flutter_hooks: ^0.17.0
-  hooks_riverpod: ^0.14.0+4
+  flutter_hooks: ^0.18.2+1
+  hooks_riverpod: ^1.0.3
   intl: ^0.17.0
   lint: ^1.5.3
   objectbox: ^1.1.1
   objectbox_flutter_libs: ^1.1.1
   path: ^1.8.0
   path_provider: ^2.0.2
-  percent_indicator: ^3.0.1
+  percent_indicator: ^4.0.0
   shared_preferences: ^2.0.6
   shared_preferences_web: ^2.0.1
 

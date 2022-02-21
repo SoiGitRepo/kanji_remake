@@ -6,13 +6,13 @@ import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
 import 'package:kanji_remake/page/level_page/level_entry.dart';
 import 'package:kanji_remake/repo/lesso_repo.dart';
 
-class LevelPage extends HookWidget {
+class LevelPage extends HookConsumerWidget {
   const LevelPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final List<Level> list = Level.fetchAll();
     return Scaffold(
       body: buildBody(context, list),
@@ -29,11 +29,11 @@ class LevelPage extends HookWidget {
         addAutomaticKeepAlives: true,
         itemCount: list.length,
         itemBuilder: (context, index) {
-          return Consumer(builder: (context, watch, child) {
+          return Consumer(builder: (context, ref, child) {
             return GestureDetector(
               onTap: () {
                 print('choosing level');
-                setCurrentLessonList(watch, index);
+                setCurrentLessonList(ref, index);
                 navigateToLesson(context);
               },
               child: WidgetLevelEntry(
@@ -46,10 +46,10 @@ class LevelPage extends HookWidget {
     );
   }
 
-  void setCurrentLessonList(watch, int jlpt) async {
+  void setCurrentLessonList(ref, int jlpt) async {
     print('getting lesson');
-    final lessonList = watch(lessonsListProvider);
-    final LessonRepository lessonRepo = watch(lessonRepoProvider);
+    final lessonList = ref.read(lessonsListProvider.notifier);
+    final LessonRepository lessonRepo = ref.watch(lessonRepoProvider);
     lessonList.state = await lessonRepo.getAllLessonWithJlpt(5 - jlpt);
   }
 
