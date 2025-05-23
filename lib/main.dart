@@ -2,6 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/generated/l10n.dart';
@@ -9,7 +10,6 @@ import 'package:kanji_remake/global_providers.dart';
 import 'package:kanji_remake/page/kanji_overview_page/page_kanji_overview.dart';
 import 'package:kanji_remake/page/lesson_page/page_lesson.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
-import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/page/splash_page/page_splash.dart';
 import 'package:kanji_remake/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,14 +19,36 @@ void main() async {
   await Firebase.initializeApp();
   final sharedPre = await SharedPreferences.getInstance();
   runApp(ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(sharedPre)],
-      child: MyApp()));
+      overrides: [sharedPreferencesProvider.overrideWithValue(sharedPre)], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  final GoRouter _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => SplashPage(),
+      ),
+      GoRoute(
+        path: '/lesson',
+        builder: (context, state) => LessonPage(),
+      ),
+      GoRoute(
+        path: '/learning',
+        builder: (context, state) => QuestionPage(),
+      ),
+      GoRoute(
+        path: '/kanji_overview',
+        builder: (context, state) => KanjiOverviewPage(),
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Kanji Remake',
       localizationsDelegates: const [
@@ -51,19 +73,13 @@ class MyApp extends StatelessWidget {
         ),
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(), // iOS風
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
           },
         ),
       ),
-      // home: MyHomePage(title: 'Home Page'),
-      routes: {
-        '/': (context) => SplashPage(),
-        '/lesson': (context) => LessonPage(),
-        '/learning': (context) => QuestionPage(),
-        '/kanji_overview': (context) => KanjiOverviewPage(),
-      },
+      routerConfig: _router,
     );
   }
 }

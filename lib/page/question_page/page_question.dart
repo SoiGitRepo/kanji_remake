@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
@@ -10,10 +9,9 @@ import 'package:kanji_remake/page/question_page/card_overview.dart';
 import 'package:kanji_remake/page/question_page/card_four_choice.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/page/setting_dialog/setting_general.dart';
-import 'package:kanji_remake/repo/lesso_repo.dart';
 import 'package:kanji_remake/theme.dart';
-import 'package:kanji_remake/utils/objectbox_hook.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:go_router/go_router.dart';
 
 class QuestionPage extends HookConsumerWidget {
   const QuestionPage({
@@ -82,11 +80,9 @@ class QuestionPage extends HookConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kNormalPaddding),
+                    padding: const EdgeInsets.symmetric(horizontal: kNormalPaddding),
                     child: Consumer(builder: (context, watch, child) {
-                      final currentKanjiField =
-                          ref.watch(currentKanjiFieldAsking);
+                      final currentKanjiField = ref.watch(currentKanjiFieldAsking);
                       switch (currentKanjiField) {
                         case KanjiField.all:
                           return KanjiOverviewCard(onPass, onTokeWrong);
@@ -116,9 +112,7 @@ class QuestionPage extends HookConsumerWidget {
   }
 
   void popThisPageOut(BuildContext context) {
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
+    context.pop();
   }
 
   Widget header(context) {

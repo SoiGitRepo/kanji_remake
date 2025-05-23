@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
-import 'package:kanji_remake/global_providers.dart';
 import 'package:kanji_remake/page/setting_dialog/sync/setting_sync_route.dart';
+import 'package:go_router/go_router.dart';
 
 class KanjiOverviewPage extends HookConsumerWidget {
   const KanjiOverviewPage({Key? key}) : super(key: key);
 
   void popThisPageOut(BuildContext context) {
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
+    context.pop();
   }
 
   showSyncSettingDialog(BuildContext context) async {
@@ -35,9 +32,6 @@ class KanjiOverviewPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final authState = useProvider(authServiceProvider);
-    final authState = ref.watch(authServiceProvider);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

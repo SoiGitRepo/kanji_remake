@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountSetting extends HookConsumerWidget {
   const AccountSetting({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void popThisPageOut() {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
+    void popThisPageOut(BuildContext context) {
+      context.pop();
     }
 
-    final _viewmodel = ref.watch(_accountSettingViewModelProvider);
     return MyDialogContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +22,7 @@ class AccountSetting extends HookConsumerWidget {
           Align(
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: popThisPageOut,
+              onTap: () => popThisPageOut(context),
               child: Text(
                 "完成",
                 style: blueBody1Text,
@@ -105,35 +102,5 @@ class AccountSetting extends HookConsumerWidget {
         ],
       ),
     );
-  }
-}
-
-final _accountSettingViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
-  return AccountSettingViewModelImpl();
-});
-
-abstract class AccountSettingViewModel extends ChangeNotifier {
-  changePsw();
-  changeDisplayName();
-  deleteAccount();
-}
-
-class AccountSettingViewModelImpl extends AccountSettingViewModel {
-  @override
-  changeDisplayName() {
-    // TODO: implement changeDisplayName
-    throw UnimplementedError();
-  }
-
-  @override
-  changePsw() {
-    // TODO: implement changePsw
-    throw UnimplementedError();
-  }
-
-  @override
-  deleteAccount() {
-    // TODO: implement deleteAccount
-    throw UnimplementedError();
   }
 }

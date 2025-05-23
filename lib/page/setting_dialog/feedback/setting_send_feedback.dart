@@ -5,6 +5,7 @@ import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
+import 'package:go_router/go_router.dart';
 
 class SendFeedBackPage extends HookConsumerWidget {
   const SendFeedBackPage({Key? key}) : super(key: key);
@@ -33,6 +34,10 @@ class SendFeedBackPage extends HookConsumerWidget {
     ref.read(feedBackMsgProvider.notifier).state = "";
   }
 
+  void popThisPageOut(BuildContext context) {
+    context.pop();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = S.of(context);
@@ -56,9 +61,7 @@ class SendFeedBackPage extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: kSmallPaddding),
             margin: EdgeInsets.only(bottom: kSmallPaddding),
             decoration: BoxDecoration(
-                color: checkingIfSaveState.value
-                    ? kRadioGroupColor
-                    : kDialogBgColor,
+                color: checkingIfSaveState.value ? kRadioGroupColor : kDialogBgColor,
                 borderRadius: BorderRadius.circular(
                   kSmallRadius,
                 )),
@@ -79,17 +82,15 @@ class SendFeedBackPage extends HookConsumerWidget {
                         color: kPrymaryColor,
                       ),
                       onTap: () {
-                        if (emailController.text.isNotEmpty ||
-                            msgController.text.isNotEmpty) {
+                        if (emailController.text.isNotEmpty || msgController.text.isNotEmpty) {
                           saveEditState(
                             ref: ref,
                             email: emailController.text,
                             msg: msgController.text,
                           );
-                          checkingIfSaveState.value =
-                              !checkingIfSaveState.value;
+                          checkingIfSaveState.value = !checkingIfSaveState.value;
                         } else {
-                          Navigator.pop(context);
+                          popThisPageOut(context);
                         }
                       },
                     ),
@@ -105,7 +106,7 @@ class SendFeedBackPage extends HookConsumerWidget {
                         Expanded(
                             child: MyOutlineTextButton(
                           onTap: () {
-                            Navigator.pop(context);
+                            popThisPageOut(context);
                           },
                           text: locale.save,
                           color: kPrymaryColor,
@@ -118,7 +119,7 @@ class SendFeedBackPage extends HookConsumerWidget {
                             child: MyOutlineTextButton(
                           onTap: () {
                             clearEditState(ref: ref);
-                            Navigator.pop(context);
+                            popThisPageOut(context);
                           },
                           text: locale.dont_save,
                           color: Colors.red,
@@ -154,8 +155,7 @@ class SendFeedBackPage extends HookConsumerWidget {
                   cursorColor: kCursorColor,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: kSmallPaddding),
+                    contentPadding: EdgeInsets.symmetric(horizontal: kSmallPaddding),
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(),
                   ),

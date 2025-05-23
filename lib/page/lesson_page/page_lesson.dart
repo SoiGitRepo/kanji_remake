@@ -8,6 +8,7 @@ import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/page/lesson_page/lesson_list_tile.dart';
 import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
+import 'package:go_router/go_router.dart';
 
 class LessonPage extends StatelessWidget {
   @override
@@ -25,9 +26,7 @@ class LessonPage extends StatelessWidget {
   }
 
   void popThisPageOut(BuildContext context) {
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
+    context.pop();
   }
 
   void navigateToKanjiOverview() {}
@@ -78,7 +77,7 @@ class LessonPage extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/kanji_overview');
+            context.go('/kanji_overview');
           },
           icon: const Icon(Icons.apps_rounded),
         ),
@@ -99,9 +98,8 @@ class LessonPage extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    ref.read(currentLessonKanjiWordsProvider.state).state =
-                        lessons[index].wordList;
-                    Navigator.pushNamed(context, '/learning');
+                    ref.read(currentLessonKanjiWordsProvider.state).state = lessons[index].wordList;
+                    context.go('/learning');
                   },
                   child: LessonEntry(lessonPre: lessons[index]));
             },
