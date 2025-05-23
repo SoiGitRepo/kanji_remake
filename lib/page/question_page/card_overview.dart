@@ -55,10 +55,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
             child: FittedBox(
               child: Text(
                 currentKanjiWord.meanings?.take(2).toString() ?? 'no Kanjikata',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .apply(color: Colors.white),
+                style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
               ),
             ),
           ),

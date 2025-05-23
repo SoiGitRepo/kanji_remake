@@ -8,12 +8,11 @@ import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/utils/util.dart';
 
-final _buttonEnableProvider = StateNotifierProvider(
-    (ref) => ListBoolNotifier(List.generate(4, (index) => true)));
+final _buttonEnableProvider =
+    StateNotifierProvider((ref) => ListBoolNotifier(List.generate(4, (index) => true)));
 
 class FourChoiceCard extends QuestionCardBlock {
-  FourChoiceCard(void Function() onPass, void Function() onTokeWrong)
-      : super(onPass, onTokeWrong);
+  FourChoiceCard(void Function() onPass, void Function() onTokeWrong) : super(onPass, onTokeWrong);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,12 +80,9 @@ class FourChoiceCard extends QuestionCardBlock {
                         child: FittedBox(
                           child: Text(
                             ifChoosingHiragana
-                                ? currentCard.kanjiWord.meanings
-                                        ?.take(2)
-                                        .toString() ??
+                                ? currentCard.kanjiWord.meanings?.take(2).toString() ??
                                     'no hiragana'
-                                : currentCard.kanjiWord.hiragana ??
-                                    'no english Meaning',
+                                : currentCard.kanjiWord.hiragana ?? 'no english Meaning',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -107,8 +103,8 @@ class FourChoiceCard extends QuestionCardBlock {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(kNormalRadius)),
-                        minimumSize: Size.fromHeight(kNormalButtonHeight),
-                        primary: kButtonBgColor2),
+                        backgroundColor: kButtonBgColor2,
+                        minimumSize: Size.fromHeight(kNormalButtonHeight)),
                     onPressed: buttonEnableList[index]
                         ? () {
                             if (e != currentAnswer) {

@@ -48,8 +48,7 @@ class AccountSetting extends HookConsumerWidget {
           ),
           Text(
             '请注意，更改密码将意味着所有设备将必须重新开启同步并同步数据。',
-            style:
-                TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
+            style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: kSmallPaddding),
@@ -57,8 +56,7 @@ class AccountSetting extends HookConsumerWidget {
               onPressed: () {},
               child: Text(
                 '更改昵称',
-                style: TextStyle(
-                    fontSize: kSmallText, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
               ),
             ),
           ),
@@ -67,8 +65,7 @@ class AccountSetting extends HookConsumerWidget {
           ),
           Text(
             '请注意，更改密码将意味着所有设备将必须重新开启同步并同步数据。',
-            style:
-                TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
+            style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
           ),
           SizedBox(
             height: kSmallPaddding,
@@ -77,8 +74,7 @@ class AccountSetting extends HookConsumerWidget {
             onPressed: () {},
             child: Text(
               '更改密码',
-              style: TextStyle(
-                  fontSize: kSmallText, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
             ),
           ),
           SizedBox(
@@ -93,19 +89,17 @@ class AccountSetting extends HookConsumerWidget {
           ),
           Text(
             '如果删除帐户，则云端中所有的进度将被删除，所有设备将停止相互更新，然而，每台设备将保留当前拥有的学习进度。',
-            style:
-                TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
+            style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
           ),
           SizedBox(
             height: kSmallPaddding,
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () {},
             child: Text(
               '删除帐户',
-              style: TextStyle(
-                  fontSize: kSmallText, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
             ),
           ),
         ],
@@ -114,8 +108,7 @@ class AccountSetting extends HookConsumerWidget {
   }
 }
 
-final _accountSettingViewModelProvider =
-    ChangeNotifierProvider.autoDispose((ref) {
+final _accountSettingViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
   return AccountSettingViewModelImpl();
 });
 

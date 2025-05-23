@@ -7,8 +7,7 @@ import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/theme.dart';
 
 class MyAnimatedSized extends StatefulWidget {
-  const MyAnimatedSized(
-      {Key? key, required this.child, this.duration, this.curve})
+  const MyAnimatedSized({Key? key, required this.child, this.duration, this.curve})
       : super(key: key);
   final Widget child;
   final Duration? duration;
@@ -18,14 +17,12 @@ class MyAnimatedSized extends StatefulWidget {
   _MyAnimatedSizedState createState() => _MyAnimatedSizedState();
 }
 
-class _MyAnimatedSizedState extends State<MyAnimatedSized>
-    with SingleTickerProviderStateMixin {
+class _MyAnimatedSizedState extends State<MyAnimatedSized> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
       duration: widget.duration ?? kDuration,
       curve: widget.curve ?? Curves.linear,
-      vsync: this,
       child: widget.child,
     );
   }
@@ -59,7 +56,7 @@ class ChooseKanjiButton extends StatelessWidget {
           onPressed: onPressed(e),
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(kSmallPaddding),
-            primary: isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
+            backgroundColor: isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
             textStyle: TextStyle(
               fontSize: height,
             ),
@@ -97,14 +94,11 @@ class RadioGroupWithTabBar extends StatelessWidget {
     final locale = S.of(context);
     late final optionString;
     if (options.first is SpeechSpeed) {
-      optionString = options
-          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
-          .toList();
+      optionString = options.map((e) => SpeechSpeedMapper(e).toLocaleString(locale)).toList();
     }
     if (options.first is ReviewQuestionOrder) {
-      optionString = options
-          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
-          .toList();
+      optionString =
+          options.map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale)).toList();
     }
 
     return Column(
@@ -132,16 +126,13 @@ class RadioGroupWithTabBar extends StatelessWidget {
                 labelColor: Colors.white,
                 unselectedLabelColor: kPrymaryColor,
                 indicator: BoxDecoration(
-                    color: kPrymaryColor,
-                    borderRadius: BorderRadius.circular(kSmallRadius - 2)),
+                    color: kPrymaryColor, borderRadius: BorderRadius.circular(kSmallRadius - 2)),
                 tabs: [
                   for (var item in options)
                     FittedBox(
                       child: Text(
                         optionString[options.indexOf(item)],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: kSmallerText),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: kSmallerText),
                       ),
                     )
                 ],
@@ -176,10 +167,8 @@ class CustomRadioGroup extends StatelessWidget {
     final locale = S.of(context);
     final padding = MediaQuery.of(context).viewInsets;
     print(padding.left);
-    final width = MediaQuery.of(context).size.width -
-        2 * kDefaultInsetPadding -
-        2 * kNormalPaddding -
-        2 * 2;
+    final width =
+        MediaQuery.of(context).size.width - 2 * kDefaultInsetPadding - 2 * kNormalPaddding - 2 * 2;
 
     final fixedOptions = [];
     for (var i = 0; i < options.length; i++) {
@@ -192,14 +181,11 @@ class CustomRadioGroup extends StatelessWidget {
 
     late final optionString;
     if (options.first is SpeechSpeed) {
-      optionString = options
-          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
-          .toList();
+      optionString = options.map((e) => SpeechSpeedMapper(e).toLocaleString(locale)).toList();
     }
     if (options.first is ReviewQuestionOrder) {
-      optionString = options
-          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
-          .toList();
+      optionString =
+          options.map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale)).toList();
     }
 
     return Column(
@@ -232,20 +218,15 @@ class CustomRadioGroup extends StatelessWidget {
                           child: AnimatedContainer(
                             margin: EdgeInsets.symmetric(
                                 vertical: 2.0,
-                                horizontal:
-                                    initialIndex == options.indexOf(item)
-                                        ? 2.0
-                                        : 8.0),
+                                horizontal: initialIndex == options.indexOf(item) ? 2.0 : 8.0),
                             decoration: BoxDecoration(
                                 color: initialIndex == options.indexOf(item)
                                     ? kPrymaryColor
                                     : kRadioGroupColor,
-                                borderRadius:
-                                    BorderRadius.circular(kSmallRadius - 2)),
+                                borderRadius: BorderRadius.circular(kSmallRadius - 2)),
                             duration: kFastDuration,
                             curve: Curves.easeOutCubic,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: kSmallPaddding),
+                            padding: const EdgeInsets.symmetric(vertical: kSmallPaddding),
                             child: Center(
                               child: Text(
                                 optionString[options.indexOf(item)],
@@ -271,11 +252,7 @@ class CustomRadioGroup extends StatelessWidget {
 
 class MyDialogContainer extends StatelessWidget {
   const MyDialogContainer(
-      {Key? key,
-      this.child,
-      this.actions,
-      this.defaultTextStyle,
-      this.elevation})
+      {Key? key, this.child, this.actions, this.defaultTextStyle, this.elevation})
       : super(key: key);
 
   final Widget? child;
@@ -296,10 +273,7 @@ class MyDialogContainer extends StatelessWidget {
       contentPadding: const EdgeInsets.all(kNormalPaddding),
       content: DefaultTextStyle(
           style: defaultTextStyle ??
-              TextStyle(
-                  color: kPrymaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: kNormalText),
+              TextStyle(color: kPrymaryColor, fontWeight: FontWeight.bold, fontSize: kNormalText),
           child: SizedBox(width: size.width, child: child ?? Container())),
       actions: actions,
     );
@@ -331,7 +305,7 @@ class MyOutlineTextButton extends StatelessWidget {
         width: size.width * 0.5,
         child: TextButton(
           style: TextButton.styleFrom(
-            primary: color ?? kPrymaryColor,
+            foregroundColor: color ?? kPrymaryColor,
             backgroundColor: fill ?? false ? color : null,
             padding: EdgeInsets.zero,
             side: BorderSide(color: color ?? kPrymaryColor, width: 1.2),

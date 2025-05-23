@@ -6,8 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/global_providers.dart';
 import 'package:kanji_remake/services/firebase_auth.dart';
 
-final authViewModelProvider =
-    ChangeNotifierProvider.autoDispose<AuthViewModel>((_) {
+final authViewModelProvider = ChangeNotifierProvider.autoDispose<AuthViewModel>((_) {
   final target = AuthViewModelImpl(_);
   _.onDispose(() {
     target.dispose();
@@ -33,7 +32,7 @@ class AuthViewModelImpl extends AuthViewModel {
   String? _email;
   String? _password;
   String? _errorText;
-  ProviderReference _ref;
+  Ref _ref;
   late final StreamSubscription _userSub;
   late AuthService _authService;
 

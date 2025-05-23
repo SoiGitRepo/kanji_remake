@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,42 +56,22 @@ class S {
 
   /// `Level`
   String get level {
-    return Intl.message(
-      'Level',
-      name: 'level',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Level', name: 'level', desc: '', args: []);
   }
 
   /// `JLPT`
   String get jlpt {
-    return Intl.message(
-      'JLPT',
-      name: 'jlpt',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('JLPT', name: 'jlpt', desc: '', args: []);
   }
 
   /// `Need Review`
   String get need_review {
-    return Intl.message(
-      'Need Review',
-      name: 'need_review',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Need Review', name: 'need_review', desc: '', args: []);
   }
 
   /// `Review Past Due`
   String get review {
-    return Intl.message(
-      'Review Past Due',
-      name: 'review',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Review Past Due', name: 'review', desc: '', args: []);
   }
 
   /// `Custom Review`
@@ -112,12 +96,7 @@ class S {
 
   /// `Learned`
   String get learned {
-    return Intl.message(
-      'Learned',
-      name: 'learned',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Learned', name: 'learned', desc: '', args: []);
   }
 
   /// `Memorize This Word...`
@@ -162,12 +141,7 @@ class S {
 
   /// `Send`
   String get send {
-    return Intl.message(
-      'Send',
-      name: 'send',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Send', name: 'send', desc: '', args: []);
   }
 
   /// `Empty Body`
@@ -202,22 +176,12 @@ class S {
 
   /// `(Optional)`
   String get optional {
-    return Intl.message(
-      '(Optional)',
-      name: 'optional',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('(Optional)', name: 'optional', desc: '', args: []);
   }
 
   /// `Message`
   String get message {
-    return Intl.message(
-      'Message',
-      name: 'message',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Message', name: 'message', desc: '', args: []);
   }
 
   /// `Your Email Address`
@@ -232,32 +196,17 @@ class S {
 
   /// `Don't Save`
   String get dont_save {
-    return Intl.message(
-      'Don\'t Save',
-      name: 'dont_save',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Don\'t Save', name: 'dont_save', desc: '', args: []);
   }
 
   /// `Yes`
   String get yes {
-    return Intl.message(
-      'Yes',
-      name: 'yes',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
   }
 
   /// `Save`
   String get save {
-    return Intl.message(
-      'Save',
-      name: 'save',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'save', desc: '', args: []);
   }
 
   /// `Save Edit?`
@@ -282,42 +231,22 @@ class S {
 
   /// `Off`
   String get off {
-    return Intl.message(
-      'Off',
-      name: 'off',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Off', name: 'off', desc: '', args: []);
   }
 
   /// `Slow`
   String get slow {
-    return Intl.message(
-      'Slow',
-      name: 'slow',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Slow', name: 'slow', desc: '', args: []);
   }
 
   /// `Medium`
   String get medium {
-    return Intl.message(
-      'Medium',
-      name: 'medium',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Medium', name: 'medium', desc: '', args: []);
   }
 
   /// `Fast`
   String get fast {
-    return Intl.message(
-      'Fast',
-      name: 'fast',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fast', name: 'fast', desc: '', args: []);
   }
 
   /// `Review Question Order`
@@ -332,32 +261,17 @@ class S {
 
   /// `English First`
   String get eng_first {
-    return Intl.message(
-      'English First',
-      name: 'eng_first',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('English First', name: 'eng_first', desc: '', args: []);
   }
 
   /// `Japanese First`
   String get jp_first {
-    return Intl.message(
-      'Japanese First',
-      name: 'jp_first',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Japanese First', name: 'jp_first', desc: '', args: []);
   }
 
   /// `Random`
   String get random {
-    return Intl.message(
-      'Random',
-      name: 'random',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Random', name: 'random', desc: '', args: []);
   }
 
   /// `Review Frequency`
@@ -372,22 +286,12 @@ class S {
 
   /// `Less`
   String get less {
-    return Intl.message(
-      'Less',
-      name: 'less',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Less', name: 'less', desc: '', args: []);
   }
 
   /// `More`
   String get more {
-    return Intl.message(
-      'More',
-      name: 'more',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('More', name: 'more', desc: '', args: []);
   }
 
   /// `Send FeedBack`
@@ -402,12 +306,7 @@ class S {
 
   /// `Lesson`
   String get lesson {
-    return Intl.message(
-      'Lesson',
-      name: 'lesson',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Lesson', name: 'lesson', desc: '', args: []);
   }
 }
 

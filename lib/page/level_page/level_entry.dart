@@ -26,16 +26,14 @@ class WidgetLevelEntry extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            decoration: BoxDecoration(
-                color: levelEntity.color,
-                shape: BoxShape.circle,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(1.0, 1.0), //(x,y)
-                    blurRadius: 5.0,
-                  )
-                ]),
+            decoration:
+                BoxDecoration(color: levelEntity.color, shape: BoxShape.circle, boxShadow: const [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(1.0, 1.0), //(x,y)
+                blurRadius: 5.0,
+              )
+            ]),
             child: SizedBox(
               width: width,
               height: width,
@@ -43,7 +41,7 @@ class WidgetLevelEntry extends StatelessWidget {
                   child: FittedBox(
                 child: Text(
                   levelEntity.title,
-                  style: _theme.textTheme.headline1?.copyWith(
+                  style: _theme.textTheme.displayLarge?.copyWith(
                     color: Colors.white,
                   ),
                 ),
@@ -55,14 +53,14 @@ class WidgetLevelEntry extends StatelessWidget {
           ),
           Text(
             "${_appLocalizations.level} ${levelEntity.level}",
-            style: _theme.textTheme.headline6?.copyWith(color: Colors.white),
+            style: _theme.textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
           const SizedBox(
             height: kSmallPaddding,
           ),
           Text(
             "(${_appLocalizations.jlpt} ${levelEntity.title})",
-            style: _theme.textTheme.bodyText2?.copyWith(color: Colors.white),
+            style: _theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
           )
         ],
       ),
