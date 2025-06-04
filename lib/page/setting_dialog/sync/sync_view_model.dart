@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final syncViewModelProvider =
-    ChangeNotifierProvider((_) => SyncViewModelImpl());
+    ChangeNotifierProvider<SyncViewModelImpl>((ref) => SyncViewModelImpl());
 
 abstract class SyncViewModel extends ChangeNotifier {
   bool get ifSync;
-  toggleSyncState(bool value);
+  void toggleSyncState(bool value);
 }
 
 class SyncViewModelImpl extends SyncViewModel {
