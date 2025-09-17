@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/model/kanji_word.dart';
+import 'package:kanji_remake/model/kanji_field.dart';
+import 'package:kanji_remake/model/kanji_word_1.dart';
 import 'package:kanji_remake/model/question_card.dart';
 import 'package:kanji_remake/providers/lesson_providers.dart';
 
@@ -52,6 +53,30 @@ class QuestionCardsNotifier extends StateNotifier<List<QuestionCard>> {
   void shuffle() {
     final shuffled = [...state]..shuffle();
     state = shuffled;
+  }
+
+  /// Remove a card at index
+  void removeAt(int index) {
+    if (index >= 0 && index < state.length) {
+      final next = [...state];
+      next.removeAt(index);
+      state = next;
+    }
+  }
+
+  /// Append a card to the end
+  void add(QuestionCard card) {
+    state = [...state, card];
+  }
+
+  /// Requeue current card to the end (used when answered wrong)
+  void requeueAtEnd(int index) {
+    if (index >= 0 && index < state.length) {
+      final next = [...state];
+      final card = next.removeAt(index);
+      next.add(card);
+      state = next;
+    }
   }
 }
 
@@ -136,8 +161,17 @@ final allChoicesProvider = Provider<List>((ref) {
   final currentKanjiField = ref.watch(currentKanjiFieldProvider);
   final currentKanjiWords = ref.watch(currentLessonKanjiWordsProvider);
   final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
+  final currentAnswerList = ref.watch(currentKanjikataQueue);
   
   switch (currentKanjiField) {
+    case KanjiField.kanjikata:
+      return List.generate(9, (index) {
+        if (index < currentAnswerList.length) {
+          return MapEntry(index, String.fromCharCode(currentAnswerList[index].value));
+        } else {
+          return MapEntry(index, "错");
+        }
+      })..shuffle();
     case KanjiField.hiragana:
       return currentKanjiWords
           .where((element) => element.word != currentKanjiWord.word)
@@ -163,4 +197,17 @@ final allChoicesProvider = Provider<List>((ref) {
 final showSubtitleProvider = Provider<bool>((ref) {
   final currentFieldProgress = ref.watch(currentFieldProgressProvider);
   return currentFieldProgress > 0;
+});
+
+/// Queue of kanji positions/charCodes to answer for Kanji-Kata selection
+final currentKanjikataQueue = Provider<List<MapEntry<int, int>>>((ref) {
+  final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
+  final codeUnits = currentKanjiWord.word.codeUnits;
+  final List<MapEntry<int, int>> queue = [];
+  for (int i = 0; i < codeUnits.length; i++) {
+    queue.add(MapEntry(i, codeUnits[i]));
+  }
+  return queue
+      .where((value) => value.value < 0x3041 || value.value > 0x309F) // 非平假名
+      .toList();
 });

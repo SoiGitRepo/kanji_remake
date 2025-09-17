@@ -4,7 +4,7 @@ import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
-import 'package:kanji_remake/page/question_page/question_state_provider.dart';
+import 'package:kanji_remake/providers/question_providers.dart';
 import 'package:kanji_remake/theme.dart';
 
 class KanjiOverviewCard extends QuestionCardBlock {

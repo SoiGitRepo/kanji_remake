@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/model/level.dart';
-import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
+import 'package:kanji_remake/providers/lesson_providers.dart';
+import 'package:kanji_remake/providers/app_providers.dart';
 import 'package:kanji_remake/page/level_page/level_entry.dart';
-import 'package:kanji_remake/repo/lesso_repo.dart';
 
 class LevelPage extends HookConsumerWidget {
   const LevelPage({
@@ -41,8 +41,8 @@ class LevelPage extends HookConsumerWidget {
   }
 
   Future<void> setCurrentLessonList(WidgetRef ref, int jlpt) async {
-    final lessonList = ref.read(lessonsListProvider.notifier);
-    final LessonRepository lessonRepo = ref.watch(lessonRepoProvider);
-    lessonList.state = await lessonRepo.getAllLessonWithJlpt(5 - jlpt);
+    // 设置 JLPT 级别并触发加载
+    ref.read(setJlptLevelProvider)(5 - jlpt);
+    await ref.read(lessonsProvider.notifier).loadLessons();
   }
 }

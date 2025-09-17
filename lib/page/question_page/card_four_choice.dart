@@ -3,9 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/model/kanji_word.dart';
+import 'package:kanji_remake/model/kanji_field.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
-import 'package:kanji_remake/page/question_page/question_state_provider.dart';
+import 'package:kanji_remake/providers/question_providers.dart';
 import 'package:kanji_remake/utils/util.dart';
 
 final _buttonEnableProvider =
@@ -16,8 +16,8 @@ class FourChoiceCard extends QuestionCardBlock {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kanjiFieldAsking = ref.watch(currentKanjiFieldAsking);
-    final ifShowSubTitle = ref.watch(showSubTitle);
+    final kanjiFieldAsking = ref.watch(currentKanjiFieldProvider);
+    final ifShowSubTitle = ref.watch(showSubtitleProvider);
     final buttonEnableList = ref.watch(_buttonEnableProvider) as List;
     final allButtonChoices = ref.watch(allChoicesProvider);
     final currentCard = ref.watch(currentQuestionCardProvider);

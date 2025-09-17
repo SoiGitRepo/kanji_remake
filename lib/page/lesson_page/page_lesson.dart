@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
-import 'package:kanji_remake/page/question_page/question_state_provider.dart';
 import 'package:kanji_remake/page/lesson_page/lesson_list_tile.dart';
-import 'package:kanji_remake/page/lesson_page/lesson_provider.dart';
+import 'package:kanji_remake/providers/lesson_providers.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:go_router/go_router.dart';
 
 class LessonPage extends StatelessWidget {
+  const LessonPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +54,7 @@ class LessonPage extends StatelessWidget {
                 style: Theme.of(context).elevatedButtonTheme.style,
               ),
               Consumer(builder: (context, ref, child) {
-                final lessonsToReview = ref.watch(lessonNeedReview);
+                final lessonsToReview = ref.watch(lessonsNeedReviewProvider);
                 return MyAnimatedSized(
                   child: SizedBox(
                     height: lessonsToReview.isNotEmpty ? null : 0,
@@ -89,8 +88,14 @@ class LessonPage extends StatelessWidget {
     return Expanded(
       child: Consumer(
         builder: (context, ref, child) {
-          final lessons = ref.watch(lessonsListProvider);
+          final lessons = ref.watch(lessonsProvider);
           final length = lessons.length;
+
+          if (length == 0) {
+            // 尝试加载一次课程（避免重复触发）
+            ref.read(lessonsProvider.notifier).loadLessons();
+            return const Center(child: CircularProgressIndicator());
+          }
 
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -98,7 +103,7 @@ class LessonPage extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    ref.read(currentLessonKanjiWordsProvider.state).state = lessons[index].wordList;
+                    ref.read(selectedLessonProvider.notifier).state = lessons[index];
                     context.go('/learning');
                   },
                   child: LessonEntry(lessonPre: lessons[index]));
