@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/global_providers.dart';
+import 'package:kanji_remake/providers/app_providers.dart';
 import 'package:kanji_remake/services/firebase_auth.dart';
 
 final authViewModelProvider = ChangeNotifierProvider.autoDispose<AuthViewModel>((_) {
