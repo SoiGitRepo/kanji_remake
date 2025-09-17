@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/model/kanji_word.dart';
-
+import 'package:kanji_remake/model/kanji_field.dart';
 import 'kanji_word_1.dart';
 
 enum QuestionCardType { overview, chooseKanji, kanjiOnly, meaningOnly, allDone }
@@ -10,6 +9,27 @@ const questionCardTypeSet = [
   QuestionCardType.kanjiOnly,
   QuestionCardType.meaningOnly,
 ];
+
+/// Mapping from question card type to required Kanji fields
+const cardTypeToFieldMap = {
+  QuestionCardType.overview: [
+    KanjiField.all,
+  ],
+  QuestionCardType.kanjiOnly: [
+    KanjiField.hiragana,
+    KanjiField.meaning,
+  ],
+  QuestionCardType.meaningOnly: [
+    KanjiField.kanjikata,
+    KanjiField.hiragana,
+  ],
+  QuestionCardType.chooseKanji: [
+    KanjiField.kanjikata,
+  ],
+  QuestionCardType.allDone: [
+    KanjiField.none,
+  ],
+};
 
 class QuestionCard {
   final KanjiWord kanjiWord;
