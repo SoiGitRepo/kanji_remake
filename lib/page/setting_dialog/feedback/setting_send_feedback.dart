@@ -35,7 +35,11 @@ class SendFeedBackPage extends HookConsumerWidget {
   }
 
   void popThisPageOut(BuildContext context) {
-    context.pop();
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/lesson');
+    }
   }
 
   @override

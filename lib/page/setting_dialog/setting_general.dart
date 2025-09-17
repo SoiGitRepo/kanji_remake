@@ -52,7 +52,11 @@ class SettingDialog extends HookConsumerWidget {
                 color: kPrymaryColor,
               ),
               onTap: () {
-                context.pop();
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/lesson');
+                }
               },
             ),
           ),

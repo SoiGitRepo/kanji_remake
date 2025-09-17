@@ -53,6 +53,9 @@ class QuestionPage extends HookConsumerWidget {
       if (fieldProgress.state < currentCard.kanjiFieldAskingFor.length - 1) {
         fieldProgress.state++;
       } else {
+        // 先重置 field 进度，避免在后续 progress 变化导致 currentFieldProgressProvider 重新创建
+        // 使得之前持有的 StateController 被 dispose 后继续使用而抛错
+        fieldProgress.state = 0;
         if (tokeWrong.state) {
           // 错题：把当前卡片移到队尾
           ref.read(questionCardsProvider.notifier).removeAt(progressIndex);
@@ -61,7 +64,6 @@ class QuestionPage extends HookConsumerWidget {
         } else {
           progress.state++;
         }
-        fieldProgress.state = 0;
         updateKanjiWordLatestPassTime(currentCard.kanjiWord);
       }
     }
@@ -81,9 +83,11 @@ class QuestionPage extends HookConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kNormalPaddding),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kNormalPaddding),
                     child: Consumer(builder: (context, watch, child) {
-                      final currentKanjiField = ref.watch(currentKanjiFieldProvider);
+                      final currentKanjiField =
+                          ref.watch(currentKanjiFieldProvider);
                       switch (currentKanjiField) {
                         case KanjiField.all:
                           return KanjiOverviewCard(onPass, onTokeWrong);
@@ -113,7 +117,18 @@ class QuestionPage extends HookConsumerWidget {
   }
 
   void popThisPageOut(BuildContext context) {
-    context.pop();
+    try {
+      final canPopGo = GoRouter.of(context).canPop();
+      final canPopNav = Navigator.of(context).canPop();
+      if (canPopGo || canPopNav) {
+        // maybePop 更稳妥，能处理对话框/路由两类返回
+        Navigator.of(context).maybePop();
+      } else {
+        context.go('/lesson');
+      }
+    } catch (_) {
+      context.go('/lesson');
+    }
   }
 
   Widget header(context) {
@@ -137,8 +152,8 @@ class QuestionPage extends HookConsumerWidget {
             backgroundColor: kButtonBgColor2,
             lineHeight: 20.0,
             animationDuration: 2500,
-            percent: percentage,
-            linearStrokeCap: LinearStrokeCap.roundAll,
+            percent: percentage.clamp(0.0, 1.0),
+            barRadius: Radius.circular(10),
             progressColor: kProgressIndicatorColor,
           ),
         );

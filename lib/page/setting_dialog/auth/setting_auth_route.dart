@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/providers/app_providers.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/auth_viewmodel.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_ep.dart';

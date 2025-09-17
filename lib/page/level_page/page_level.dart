@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/model/level.dart';
@@ -28,7 +27,7 @@ class LevelPage extends HookConsumerWidget {
             return GestureDetector(
               onTap: () async {
                 await setCurrentLessonList(ref, index);
-                context.go('/lesson');
+                context.push('/lesson');
               },
               child: WidgetLevelEntry(
                 levelEntity: list[list.length - index - 1],

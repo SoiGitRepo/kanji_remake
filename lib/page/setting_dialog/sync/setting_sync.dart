@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
@@ -22,7 +21,11 @@ class SyncPage extends HookConsumerWidget {
     final ifSync = _syncViewModel.ifSync && _authViewModel.user != null;
 
     void popThisPageOut(BuildContext context) {
-      context.pop();
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/lesson');
+      }
     }
 
     resetAuthEvent() {

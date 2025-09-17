@@ -9,7 +9,17 @@ class KanjiOverviewPage extends HookConsumerWidget {
   const KanjiOverviewPage({Key? key}) : super(key: key);
 
   void popThisPageOut(BuildContext context) {
-    context.pop();
+    try {
+      final canPopGo = GoRouter.of(context).canPop();
+      final canPopNav = Navigator.of(context).canPop();
+      if (canPopGo || canPopNav) {
+        Navigator.of(context).maybePop();
+      } else {
+        context.go('/lesson');
+      }
+    } catch (_) {
+      context.go('/lesson');
+    }
   }
 
   showSyncSettingDialog(BuildContext context) async {

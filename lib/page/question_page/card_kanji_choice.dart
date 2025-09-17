@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/colors.dart';
@@ -14,7 +13,8 @@ import 'package:kanji_remake/utils/functions.dart';
 import 'package:kanji_remake/utils/util.dart';
 
 class ChooseKanjiCard extends QuestionCardBlock {
-  ChooseKanjiCard(void Function() onPass, void Function() onTokeWrong) : super(onPass, onTokeWrong);
+  ChooseKanjiCard(void Function() onPass, void Function() onTokeWrong)
+      : super(onPass, onTokeWrong);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,8 +23,11 @@ class ChooseKanjiCard extends QuestionCardBlock {
     final titleHeight = size.height * kTitleHeightRTSH;
     final subtitleHeight = size.height * kSubtitleHeightRTSH;
     final choiceHeight = size.height * kChoiceCardHeightRTSH;
-    final choicePaddingLeft =
-        (size.width - kNormalPaddding * 2 - choiceHeight * 3 - kSmallPaddding * 2) / 2;
+    final choicePaddingLeft = (size.width -
+            kNormalPaddding * 2 -
+            choiceHeight * 3 -
+            kSmallPaddding * 2) /
+        2;
     final currentAnswerIndex = ref.read(_currentAnswerIndex);
     final ifChosen = ref.watch(_ifChosen);
     final currentCard = ref.watch(currentQuestionCardProvider);
@@ -33,12 +36,18 @@ class ChooseKanjiCard extends QuestionCardBlock {
     final allButtonChoices = ref.read(allChoicesProvider);
     final currentKanjiWord = ref.read(currentQuestionCardProvider).kanjiWord;
     final currentAnswerQueue = ref.read(currentKanjikataQueue);
-    final ifDone = ifChosen.take(currentAnswerQueue.length).where((element) => element).length ==
+    final ifDone = ifChosen
+            .take(currentAnswerQueue.length)
+            .where((element) => element)
+            .length ==
         currentAnswerQueue.length;
-    final answerHeight =
-        min((size.width - 2 * kNormalPaddding) / (currentKanjiWord.word.length), choiceHeight);
-    final answerPaddingLeft =
-        (size.width - 2 * kNormalPaddding - answerHeight * (currentKanjiWord.word.length)) / 2;
+    final answerHeight = min(
+        (size.width - 2 * kNormalPaddding) / (currentKanjiWord.word.length),
+        choiceHeight);
+    final answerPaddingLeft = (size.width -
+            2 * kNormalPaddding -
+            answerHeight * (currentKanjiWord.word.length)) /
+        2;
 
     bool isAnswer(int index) {
       return index < currentAnswerQueue.length;
@@ -62,7 +71,8 @@ class ChooseKanjiCard extends QuestionCardBlock {
         return size.height * 0.6;
       }
       return kBigPaddding +
-          ((8 - allButtonChoices.indexOf(e)) / 3).floorToDouble() * (choiceHeight + kSmallPaddding);
+          ((8 - allButtonChoices.indexOf(e)) / 3).floorToDouble() *
+              (choiceHeight + kSmallPaddding);
     }
 
     void toggleChosen(int index) {
@@ -106,7 +116,9 @@ class ChooseKanjiCard extends QuestionCardBlock {
                   bottom: caculateChoiceButtonBottom(e),
                   child: ChooseKanjiButton(
                     e: e,
-                    height: isChosenAsCorrect(e.key) ? answerHeight - kSmallPaddding : choiceHeight,
+                    height: isChosenAsCorrect(e.key)
+                        ? answerHeight - kSmallPaddding
+                        : choiceHeight,
                     ifChosen: ifChosen[e.key],
                     isChosenAsCorrect: isChosenAsCorrect(e.key),
                     onPressed: onButtonPressed,
@@ -123,8 +135,9 @@ class ChooseKanjiCard extends QuestionCardBlock {
                     visible: !ifDone,
                     child: ChooseKanjiButton(
                       e: e,
-                      height:
-                          isChosenAsCorrect(e.key) ? answerHeight - kSmallPaddding : choiceHeight,
+                      height: isChosenAsCorrect(e.key)
+                          ? answerHeight - kSmallPaddding
+                          : choiceHeight,
                       ifChosen: ifChosen[e.key],
                       isChosenAsCorrect: isChosenAsCorrect(e.key),
                       onPressed: onButtonPressed,

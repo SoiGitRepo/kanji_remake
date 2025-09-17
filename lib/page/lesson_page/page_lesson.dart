@@ -25,7 +25,17 @@ class LessonPage extends StatelessWidget {
   }
 
   void popThisPageOut(BuildContext context) {
-    context.pop();
+    try {
+      final canPopGo = GoRouter.of(context).canPop();
+      final canPopNav = Navigator.of(context).canPop();
+      if (canPopGo || canPopNav) {
+        Navigator.of(context).maybePop();
+      } else {
+        context.go('/lesson');
+      }
+    } catch (_) {
+      context.go('/lesson');
+    }
   }
 
   void navigateToKanjiOverview() {}
@@ -76,7 +86,7 @@ class LessonPage extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            context.go('/kanji_overview');
+            context.push('/kanji_overview');
           },
           icon: const Icon(Icons.apps_rounded),
         ),
@@ -103,8 +113,9 @@ class LessonPage extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    ref.read(selectedLessonProvider.notifier).state = lessons[index];
-                    context.go('/learning');
+                    ref.read(selectedLessonProvider.notifier).state =
+                        lessons[index];
+                    context.push('/learning');
                   },
                   child: LessonEntry(lessonPre: lessons[index]));
             },

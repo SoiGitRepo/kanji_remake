@@ -12,7 +12,11 @@ class AccountSetting extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void popThisPageOut(BuildContext context) {
-      context.pop();
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/lesson');
+      }
     }
 
     return MyDialogContainer(

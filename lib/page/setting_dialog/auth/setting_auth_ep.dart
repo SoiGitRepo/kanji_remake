@@ -8,7 +8,6 @@ import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/auth_viewmodel.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/page/setting_dialog/feedback/setting_send_feedback.dart';
-import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 
 class AuthInfoFormPage extends HookConsumerWidget {
