@@ -6,6 +6,7 @@ import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/providers/question_providers.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class KanjiOverviewCard extends QuestionCardBlock {
   KanjiOverviewCard(void Function() onPass, void Function() onTokeWrong)
@@ -84,7 +85,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
                     'OK',
                   ),
                   style: kOkButtonStyle,
-                ),
+                ).glassy(borderRadius: kSmallRadius),
               )
             ],
           ),

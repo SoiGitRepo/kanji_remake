@@ -7,6 +7,7 @@ import 'package:kanji_remake/page/lesson_page/lesson_list_tile.dart';
 import 'package:kanji_remake/providers/lesson_providers.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class LessonPage extends StatelessWidget {
   const LessonPage({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class LessonPage extends StatelessWidget {
                 onPressed: () {},
                 child: Text(_appLocalizations.custom_review),
                 style: Theme.of(context).elevatedButtonTheme.style,
-              ),
+              ).glassy(borderRadius: kSmallRadius),
               Consumer(builder: (context, ref, child) {
                 final lessonsToReview = ref.watch(lessonsNeedReviewProvider);
                 return MyAnimatedSized(
@@ -74,7 +75,7 @@ class LessonPage extends StatelessWidget {
                         _appLocalizations.review,
                         style: TextStyle(color: kReviewLableColor),
                       ),
-                    ),
+                    ).glassy(borderRadius: kSmallRadius),
                   ),
                 );
               }),

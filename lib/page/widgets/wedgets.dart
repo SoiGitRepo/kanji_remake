@@ -1,12 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class MyAnimatedSized extends StatefulWidget {
-  const MyAnimatedSized({Key? key, required this.child, this.duration, this.curve})
+  const MyAnimatedSized(
+      {Key? key, required this.child, this.duration, this.curve})
       : super(key: key);
   final Widget child;
   final Duration? duration;
@@ -16,7 +17,8 @@ class MyAnimatedSized extends StatefulWidget {
   _MyAnimatedSizedState createState() => _MyAnimatedSizedState();
 }
 
-class _MyAnimatedSizedState extends State<MyAnimatedSized> with SingleTickerProviderStateMixin {
+class _MyAnimatedSizedState extends State<MyAnimatedSized>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
@@ -55,7 +57,8 @@ class ChooseKanjiButton extends StatelessWidget {
           onPressed: onPressed(e),
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(kSmallPaddding),
-            backgroundColor: isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
+            backgroundColor:
+                isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
             textStyle: TextStyle(
               fontSize: height,
             ),
@@ -65,7 +68,7 @@ class ChooseKanjiButton extends StatelessWidget {
               e.value,
             ),
           ),
-        ),
+        ).glassy(borderRadius: kSmallRadius),
       ),
     );
   }
@@ -93,11 +96,14 @@ class RadioGroupWithTabBar extends StatelessWidget {
     final locale = S.of(context);
     late final optionString;
     if (options.first is SpeechSpeed) {
-      optionString = options.map((e) => SpeechSpeedMapper(e).toLocaleString(locale)).toList();
+      optionString = options
+          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
+          .toList();
     }
     if (options.first is ReviewQuestionOrder) {
-      optionString =
-          options.map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale)).toList();
+      optionString = options
+          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
+          .toList();
     }
 
     return Column(
@@ -125,13 +131,16 @@ class RadioGroupWithTabBar extends StatelessWidget {
                 labelColor: Colors.white,
                 unselectedLabelColor: kPrymaryColor,
                 indicator: BoxDecoration(
-                    color: kPrymaryColor, borderRadius: BorderRadius.circular(kSmallRadius - 2)),
+                    color: kPrymaryColor,
+                    borderRadius: BorderRadius.circular(kSmallRadius - 2)),
                 tabs: [
                   for (var item in options)
                     FittedBox(
                       child: Text(
                         optionString[options.indexOf(item)],
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: kSmallerText),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: kSmallerText),
                       ),
                     )
                 ],
@@ -166,8 +175,10 @@ class CustomRadioGroup extends StatelessWidget {
     final locale = S.of(context);
     final padding = MediaQuery.of(context).viewInsets;
     print(padding.left);
-    final width =
-        MediaQuery.of(context).size.width - 2 * kDefaultInsetPadding - 2 * kNormalPaddding - 2 * 2;
+    final width = MediaQuery.of(context).size.width -
+        2 * kDefaultInsetPadding -
+        2 * kNormalPaddding -
+        2 * 2;
 
     final fixedOptions = [];
     for (var i = 0; i < options.length; i++) {
@@ -180,11 +191,14 @@ class CustomRadioGroup extends StatelessWidget {
 
     late final optionString;
     if (options.first is SpeechSpeed) {
-      optionString = options.map((e) => SpeechSpeedMapper(e).toLocaleString(locale)).toList();
+      optionString = options
+          .map((e) => SpeechSpeedMapper(e).toLocaleString(locale))
+          .toList();
     }
     if (options.first is ReviewQuestionOrder) {
-      optionString =
-          options.map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale)).toList();
+      optionString = options
+          .map((e) => ReviewQuestionOrderMapper(e).toLocaleString(locale))
+          .toList();
     }
 
     return Column(
@@ -193,56 +207,121 @@ class CustomRadioGroup extends StatelessWidget {
         Text(
           "$title:",
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: kRadioGroupColor,
-            borderRadius: BorderRadius.circular(kSmallRadius),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (var item in fixedOptions)
-                item == 0
-                    ? Container(
-                        color: kDividerColor,
-                        width: 1,
-                        height: 15,
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          onChangeSelected(item);
-                        },
-                        child: SizedBox(
-                          width: width / options.length,
-                          child: AnimatedContainer(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 2.0,
-                                horizontal: initialIndex == options.indexOf(item) ? 2.0 : 8.0),
-                            decoration: BoxDecoration(
-                                color: initialIndex == options.indexOf(item)
-                                    ? kPrymaryColor
-                                    : kRadioGroupColor,
-                                borderRadius: BorderRadius.circular(kSmallRadius - 2)),
-                            duration: kFastDuration,
-                            curve: Curves.easeOutCubic,
-                            padding: const EdgeInsets.symmetric(vertical: kSmallPaddding),
-                            child: Center(
-                              child: Text(
-                                optionString[options.indexOf(item)],
-                                maxLines: 1,
-                                overflow: TextOverflow.fade,
-                                style: TextStyle(
-                                    fontSize: kSmallerText,
-                                    color: initialIndex == options.indexOf(item)
-                                        ? Colors.white
-                                        : kPrymaryColor),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: kRadioGroupColor,
+                borderRadius: BorderRadius.circular(kSmallRadius),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (var item in fixedOptions)
+                    item == 0
+                        ? Container(
+                            color: kDividerColor,
+                            width: 1,
+                            height: 15,
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              onChangeSelected(item);
+                            },
+                            child: SizedBox(
+                              width: width / options.length,
+                              child: AnimatedContainer(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 2.0,
+                                    horizontal:
+                                        initialIndex == options.indexOf(item)
+                                            ? 2.0
+                                            : 8.0),
+                                decoration: BoxDecoration(
+                                    color: kRadioGroupColor,
+                                    borderRadius: BorderRadius.circular(
+                                        kSmallRadius - 2)),
+                                duration: kFastDuration,
+                                curve: Curves.easeOutCubic,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: kSmallPaddding),
+                                child: Center(
+                                  child: Text(
+                                    optionString[options.indexOf(item)],
+                                    maxLines: 1,
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                        fontSize: kSmallerText,
+                                        color: initialIndex ==
+                                                options.indexOf(item)
+                                            ? Colors.transparent
+                                            : kPrymaryColor),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                for (var item in fixedOptions)
+                  item == 0
+                      ? Container(
+                          color: Colors.transparent,
+                          width: 1,
+                          height: 15,
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            onChangeSelected(item);
+                          },
+                          child: SizedBox(
+                            width: width / options.length,
+                            child: AnimatedContainer(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 0.0,
+                                  horizontal:
+                                      initialIndex == options.indexOf(item)
+                                          ? 2.0
+                                          : 8.0),
+                              // decoration: BoxDecoration(
+                              //     color:
+                              //         // initialIndex == options.indexOf(item)
+                              //         // ? kPrymaryColor:
+                              //         kRadioGroupColor,
+                              //     borderRadius:
+                              //         BorderRadius.circular(kSmallRadius - 2)),
+                              duration: kFastDuration,
+                              curve: Curves.easeOutCubic,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: kSmallPaddding),
+                              child: Center(
+                                child: Text(
+                                  optionString[options.indexOf(item)],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.fade,
+                                  style: TextStyle(
+                                      fontSize: kSmallerText,
+                                      color:
+                                          initialIndex == options.indexOf(item)
+                                              ? Colors.white
+                                              : kPrymaryColor),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-            ],
-          ),
+                        ).glassy(
+                          apply: initialIndex == options.indexOf(item),
+                          borderRadius: kSmallRadius - 2,
+                        )
+              ],
+            ),
+          ],
         )
       ],
     );
@@ -251,7 +330,11 @@ class CustomRadioGroup extends StatelessWidget {
 
 class MyDialogContainer extends StatelessWidget {
   const MyDialogContainer(
-      {Key? key, this.child, this.actions, this.defaultTextStyle, this.elevation})
+      {Key? key,
+      this.child,
+      this.actions,
+      this.defaultTextStyle,
+      this.elevation})
       : super(key: key);
 
   final Widget? child;
@@ -272,7 +355,10 @@ class MyDialogContainer extends StatelessWidget {
       contentPadding: const EdgeInsets.all(kNormalPaddding),
       content: DefaultTextStyle(
           style: defaultTextStyle ??
-              TextStyle(color: kPrymaryColor, fontWeight: FontWeight.bold, fontSize: kNormalText),
+              TextStyle(
+                  color: kPrymaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: kNormalText),
           child: SizedBox(width: size.width, child: child ?? Container())),
       actions: actions,
     );
@@ -319,7 +405,7 @@ class MyOutlineTextButton extends StatelessWidget {
                   fontSize: kSmallText),
             ),
           ),
-        ),
+        ).glassy(borderRadius: kSmallRadius),
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/model/level.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 class WidgetLevelEntry extends StatelessWidget {
   const WidgetLevelEntry({
@@ -25,28 +27,61 @@ class WidgetLevelEntry extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            decoration:
-                BoxDecoration(color: levelEntity.color, shape: BoxShape.circle, boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(1.0, 1.0), //(x,y)
-                blurRadius: 5.0,
-              )
-            ]),
-            child: SizedBox(
-              width: width,
-              height: width,
-              child: Center(
+          Stack(
+            alignment: AlignmentGeometry.center,
+            children: [
+              Container(
+                width: width,
+                height: width,
+                decoration: BoxDecoration(
+                  // color: levelEntity.color,
+                  shape: BoxShape.circle,
+                  // boxShadow: const [
+                  //   BoxShadow(
+                  //     color: Color.fromARGB(255, 171, 150, 150),
+                  //     offset: Offset(1.0, 1.0), //(x,y)
+                  //     blurRadius: 5.0,
+                  //   )
+                  // ],
+                ),
+                // child: Center(child: Text("xxxxxxxxxxxxxxxxxxxxxxxxx")),
+              ),
+              Container(
+                width: width / 4 * 3,
+                height: width / 4 * 3,
+                decoration: BoxDecoration(
+                  // color: Colors.red,
+                  shape: BoxShape.circle,
+                  // boxShadow: const [
+                  //   BoxShadow(
+                  //     color: Color.fromARGB(255, 171, 150, 150),
+                  //     offset: Offset(1.0, 1.0), //(x,y)
+                  //     blurRadius: 5.0,
+                  //   )
+                  // ],
+                ),
+                child: Center(
                   child: FittedBox(
-                child: Text(
-                  levelEntity.title,
-                  style: _theme.textTheme.displayLarge?.copyWith(
-                    color: Colors.white,
+                    child: Text(
+                      levelEntity.title,
+                      style: _theme.textTheme.displayLarge?.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              )),
-            ),
+              ).glassyOval(
+                settings: LiquidGlassSettings(
+                  glassColor: levelEntity.color.withAlpha(123),
+                  thickness: 10,
+                  blur: 5,
+                  blend: 40,
+                  lightIntensity: 0.5,
+                  lightAngle: 0.7 * pi,
+                  ambientStrength: 0.2,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: kSmallPaddding,

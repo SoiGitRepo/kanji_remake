@@ -7,6 +7,7 @@ import 'package:kanji_remake/model/kanji_field.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/providers/question_providers.dart';
 import 'package:kanji_remake/utils/util.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 final _buttonEnableProvider =
     StateNotifierProvider((ref) => ListBoolNotifier(List.generate(4, (index) => true)));
@@ -114,7 +115,7 @@ class FourChoiceCard extends QuestionCardBlock {
                             }
                           }
                         : null,
-                    child: FittedBox(child: Text(e ?? ''))),
+                    child: FittedBox(child: Text(e ?? ''))).glassy(borderRadius: kNormalRadius),
               );
             }).toList(),
           ),

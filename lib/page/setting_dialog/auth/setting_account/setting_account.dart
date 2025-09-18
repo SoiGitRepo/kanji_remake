@@ -5,6 +5,7 @@ import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class AccountSetting extends HookConsumerWidget {
   const AccountSetting({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class AccountSetting extends HookConsumerWidget {
                 '更改昵称',
                 style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
               ),
-            ),
+            ).glassy(borderRadius: kSmallRadius),
           ),
           Divider(
             color: Colors.grey,
@@ -77,7 +78,7 @@ class AccountSetting extends HookConsumerWidget {
               '更改密码',
               style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
             ),
-          ),
+          ).glassy(borderRadius: kSmallRadius),
           SizedBox(
             height: kBigPaddding,
           ),
@@ -102,7 +103,7 @@ class AccountSetting extends HookConsumerWidget {
               '删除帐户',
               style: TextStyle(fontSize: kSmallText, fontWeight: FontWeight.normal),
             ),
-          ),
+          ).glassy(borderRadius: kSmallRadius),
         ],
       ),
     );

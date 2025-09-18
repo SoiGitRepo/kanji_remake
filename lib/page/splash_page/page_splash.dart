@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kanji_remake/page/level_page/page_level.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 // Define a provider for the database initialization state
 final databaseInitializationProvider = FutureProvider<void>((ref) async {
@@ -63,7 +64,7 @@ class SplashPage extends HookConsumerWidget {
               ElevatedButton(
                 onPressed: () => ref.refresh(databaseInitializationProvider),
                 child: Text('重试'),
-              ),
+              ).glassy(borderRadius: 12),
             ],
           ),
         ),

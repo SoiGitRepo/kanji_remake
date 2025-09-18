@@ -9,6 +9,7 @@ import 'package:kanji_remake/page/setting_dialog/auth/auth_viewmodel.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/page/setting_dialog/feedback/setting_send_feedback.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class AuthInfoFormPage extends HookConsumerWidget {
   const AuthInfoFormPage({Key? key, required this.updateEvent})
@@ -149,7 +150,7 @@ class AuthInfoFormPage extends HookConsumerWidget {
                   child: Text(isLoggingin ? '登录' : '注册',
                       style: TextStyle(
                           fontSize: kSmallText,
-                          fontWeight: FontWeight.normal))),
+                          fontWeight: FontWeight.normal))).glassy(borderRadius: kSmallRadius),
           isLoggingin
               ? Align(
                   alignment: Alignment.bottomRight,

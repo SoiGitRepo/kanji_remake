@@ -11,6 +11,7 @@ import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
 import 'package:kanji_remake/utils/functions.dart';
 import 'package:kanji_remake/utils/util.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class ChooseKanjiCard extends QuestionCardBlock {
   ChooseKanjiCard(void Function() onPass, void Function() onTokeWrong)
@@ -172,7 +173,7 @@ class ChooseKanjiCard extends QuestionCardBlock {
                           String.fromCharCode(e),
                         ),
                       ),
-                    ),
+                    ).glassy(borderRadius: kSmallRadius),
                   ),
           );
         },
@@ -256,7 +257,7 @@ class ChooseKanjiCard extends QuestionCardBlock {
                         'OK',
                       ),
                       style: kOkButtonStyle,
-                    ),
+                    ).glassy(borderRadius: kSmallRadius),
                   )
                 ],
               ),

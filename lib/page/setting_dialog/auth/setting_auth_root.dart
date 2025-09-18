@@ -4,6 +4,7 @@ import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:kanji_remake/widgets/glassy/glassy.dart';
 
 class AuthRootPage extends HookConsumerWidget {
   const AuthRootPage({
@@ -36,14 +37,14 @@ class AuthRootPage extends HookConsumerWidget {
             },
             child: Text('创建新账户',
                 style: TextStyle(
-                    fontSize: kSmallText, fontWeight: FontWeight.normal))),
+                    fontSize: kSmallText, fontWeight: FontWeight.normal))).glassy(borderRadius: kSmallRadius),
         ElevatedButton(
             onPressed: () {
               updateEvent(context, ref, AuthEvent.signIn);
             },
             child: Text('登录',
                 style: TextStyle(
-                    fontSize: kSmallText, fontWeight: FontWeight.normal))),
+                    fontSize: kSmallText, fontWeight: FontWeight.normal))).glassy(borderRadius: kSmallRadius),
       ],
     );
   }
