@@ -48,3 +48,21 @@ lib/objectbox.g.dart
 
 #file temp
 /plan.md
+# Android keystore (do not commit)
+android/app/kanjiremake.keystore
+
+# FVM Version Cache
+.fvm/
+
+# VSCode settings (local)
+.vscode/
+
+# iOS SwiftPM local workspace data
+ios/Runner.xcworkspace/xcshareddata/swiftpm/
+
+# Accidental file with leading space
+ plan.md
+
+# CocoaPods generated files
+ios/Podfile.lock
+ios/Pods/
