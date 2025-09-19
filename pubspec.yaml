@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^6.0.2
   firebase_core: ^4.1.0
+  cloud_firestore: ^6.0.1
   flutter_hooks: ^0.21.2
   hooks_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1

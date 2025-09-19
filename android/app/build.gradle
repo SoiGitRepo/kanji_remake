@@ -55,16 +55,19 @@ android {
         release {
             signingConfig signingConfigs.kanjiremake
             minifyEnabled false
+            shrinkResources false
         }
         debug {
             signingConfig signingConfigs.kanjiremake
             minifyEnabled false
+            shrinkResources false
         }
         profile {
             // Flutter 的 Profile 构建类型
             signingConfig signingConfigs.kanjiremake
             matchingFallbacks = ['release']
             minifyEnabled false
+            shrinkResources false
         }
     }
 

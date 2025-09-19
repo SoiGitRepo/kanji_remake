@@ -8,6 +8,7 @@ import 'package:kanji_remake/page/setting_dialog/auth/setting_auth_route.dart';
 import 'package:kanji_remake/page/setting_dialog/sync/sync_view_model.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:kanji_remake/theme.dart';
+import 'package:kanji_remake/providers/app_providers.dart';
 import 'package:go_router/go_router.dart';
 
 class SyncPage extends HookConsumerWidget {
@@ -18,7 +19,12 @@ class SyncPage extends HookConsumerWidget {
     final _syncViewModel = ref.watch(syncViewModelProvider);
     final _authViewModel = ref.watch(authViewModelProvider);
     final authEventPro = ref.read(authEventProvider.notifier);
-    final ifSync = _syncViewModel.ifSync && _authViewModel.user != null;
+    // 是否使用 iCloud 同步（静默）由配置决定
+    final useICloud = ref.watch(isICloudSyncProvider);
+    // 使用 iCloud：仅依据 ViewModel 的开关；使用 Firebase：需登录
+    final ifSync = useICloud
+        ? _syncViewModel.ifSync
+        : (_syncViewModel.ifSync && _authViewModel.user != null);
 
     void popThisPageOut(BuildContext context) {
       if (context.canPop()) {
@@ -87,12 +93,19 @@ class SyncPage extends HookConsumerWidget {
               duration: kFastDuration),
           Switch(
             value: ifSync,
-            onChanged: (value) {
-              _syncViewModel.toggleSyncState(value);
-              if (value) {
-                resetAuthEvent();
+            onChanged: (value) async {
+              await _syncViewModel.toggleSyncState(value);
+              if (!useICloud) {
+                if (value) {
+                  // 打开同步时，引导到账号登录/注册页
+                  resetAuthEvent();
+                  // 由现有页面逻辑处理后续
+                } else {
+                  // 关闭同步时同时登出
+                  _authViewModel.signOut();
+                }
               } else {
-                _authViewModel.signOut();
+                // iOS 静默处理：出错时 ViewModel 会自动关闭开关
               }
             },
             activeColor: kPrymaryColor,
@@ -100,6 +113,13 @@ class SyncPage extends HookConsumerWidget {
           SizedBox(
             height: kNormalPaddding,
           ),
+          if (_syncViewModel.errorMsg != null) ...[
+            SizedBox(height: kSmallPaddding),
+            Text(
+              _syncViewModel.errorMsg!,
+              style: whiteBody2Text.copyWith(color: Colors.redAccent),
+            ),
+          ],
           AnimatedCrossFade(
               sizeCurve: Curves.easeOutCubic,
               firstChild: Column(children: syncOnToShow(context, size)),
