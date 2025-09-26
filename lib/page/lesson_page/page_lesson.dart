@@ -8,19 +8,19 @@ import 'package:kanji_remake/providers/lesson_providers.dart';
 import 'package:kanji_remake/page/widgets/wedgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kanji_remake/widgets/glassy/glassy.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 class LessonPage extends StatelessWidget {
   const LessonPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            header(context),
-            lessonList(context),
-          ],
-        ),
+      body: Stack(
+        alignment: AlignmentGeometry.topCenter,
+        children: [
+          lessonList(context),
+          header(context),
+        ],
       ),
     );
   }
@@ -43,86 +43,111 @@ class LessonPage extends StatelessWidget {
 
   Widget header(BuildContext context) {
     final S _appLocalizations = S.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        IconButton(
-          onPressed: () {
-            popThisPageOut(context);
-          },
-          icon: const Icon(Icons.close_rounded),
-        ),
-        const SizedBox(
-          width: kSmallPaddding,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(_appLocalizations.custom_review),
-                style: Theme.of(context).elevatedButtonTheme.style,
-              ).glassy(borderRadius: kSmallRadius),
-              Consumer(builder: (context, ref, child) {
-                final lessonsToReview = ref.watch(lessonsNeedReviewProvider);
-                return MyAnimatedSized(
-                  child: SizedBox(
-                    height: lessonsToReview.isNotEmpty ? null : 0,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        _appLocalizations.review,
-                        style: TextStyle(color: kReviewLableColor),
-                      ),
-                    ).glassy(borderRadius: kSmallRadius),
-                  ),
-                );
-              }),
-            ],
+    return SafeArea(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: kSmallPaddding),
+          IconButton(
+            onPressed: () {
+              popThisPageOut(context);
+            },
+            icon: const Icon(Icons.close_rounded),
+          ).glassyOval(
+            glassContainsChild: false,
+            settings: LiquidGlassSettings(blur: 1),
           ),
-        ),
-        const SizedBox(
-          width: kSmallPaddding,
-        ),
-        IconButton(
-          onPressed: () {
-            context.push('/kanji_overview');
-          },
-          icon: const Icon(Icons.apps_rounded),
-        ),
-      ],
+          const SizedBox(width: kSmallPaddding),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text(_appLocalizations.custom_review,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      )),
+                  style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                        backgroundColor: WidgetStatePropertyAll(
+                          Colors.transparent,
+                        ),
+                        shadowColor: WidgetStatePropertyAll(
+                          Colors.transparent,
+                        ),
+                      ),
+                ).glassy(
+                  borderRadius: kSmallRadius,
+                  settings: LiquidGlassSettings(
+                    blur: 1,
+                  ),
+                ),
+                Consumer(builder: (context, ref, child) {
+                  final lessonsToReview = ref.watch(lessonsNeedReviewProvider);
+                  return MyAnimatedSized(
+                    child: SizedBox(
+                      height: lessonsToReview.isNotEmpty ? null : 0,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          _appLocalizations.review,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                    .extension<AppColors>()
+                                    ?.warning ??
+                                Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+          const SizedBox(width: kSmallPaddding),
+          IconButton(
+            onPressed: () {
+              context.push('/kanji_overview');
+            },
+            icon: const Icon(Icons.apps_rounded),
+          ).glassyOval(
+            glassContainsChild: false,
+            settings: LiquidGlassSettings(blur: 1),
+          ),
+          const SizedBox(width: kSmallPaddding),
+        ],
+      ),
     );
   }
 
   Widget lessonList(BuildContext context) {
-    return Expanded(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final lessons = ref.watch(lessonsProvider);
-          final length = lessons.length;
+    return Consumer(
+      builder: (context, ref, child) {
+        final lessons = ref.watch(lessonsProvider);
+        final length = lessons.length;
 
-          if (length == 0) {
-            // 尝试加载一次课程（避免重复触发）
-            ref.read(lessonsProvider.notifier).loadLessons();
-            return const Center(child: CircularProgressIndicator());
-          }
+        if (length == 0) {
+          // 尝试加载一次课程（避免重复触发）
+          ref.read(lessonsProvider.notifier).loadLessons();
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: length - 1,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                  onTap: () {
-                    ref.read(selectedLessonProvider.notifier).state =
-                        lessons[index];
-                    context.push('/learning');
-                  },
-                  child: LessonEntry(lessonPre: lessons[index]));
-            },
-          );
-        },
-      ),
+        return ListView.builder(
+          padding: const EdgeInsets.only(top: 110.0),
+          physics: const BouncingScrollPhysics(),
+          itemCount: length - 1,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+                onTap: () {
+                  ref.read(selectedLessonProvider.notifier).state =
+                      lessons[index];
+                  context.push('/learning');
+                },
+                child: LessonEntry(lessonPre: lessons[index]));
+          },
+        );
+      },
     );
   }
 }

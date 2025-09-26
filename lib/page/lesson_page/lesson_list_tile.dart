@@ -15,6 +15,9 @@ class LessonEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S _s = S.of(context);
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final appColors = theme.extension<AppColors>();
 
     final ifEnable = lessonPre.state != LessonState.notReady;
     final ifShowLable = ifEnable;
@@ -24,18 +27,18 @@ class LessonEntry extends StatelessWidget {
     switch (lessonPre.state) {
       case LessonState.ready:
         labelText = _s.ready_to_learn;
-        lableColor = kReadyLableColor;
+        lableColor = appColors?.success ?? cs.tertiary;
         break;
       case LessonState.learned:
         labelText = _s.learned;
-        lableColor = Colors.grey;
+        lableColor = cs.outlineVariant;
         break;
       case LessonState.needReview:
         labelText = _s.need_review;
-        lableColor = kReviewLableColor;
+        lableColor = appColors?.warning ?? Colors.orange;
         break;
       default:
-        lableColor = Colors.grey;
+        lableColor = cs.outlineVariant;
         labelText = '';
     }
     final iconText = lessonPre.wordList.first.word.toString().characters.first;
@@ -61,12 +64,17 @@ class LessonEntry extends StatelessWidget {
               height: 80.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: ifEnable ? Theme.of(context).primaryColor : Colors.grey,
+                color: ifEnable
+                    ? (appColors?.success ?? cs.tertiary)
+                    : cs.surfaceVariant,
               ),
               child: Center(
                 child: Text(
                   iconText,
-                  style: whiteBigIconText,
+                  // 根据主题切换前景色，浅色/深色均可读
+                  style: ifEnable
+                      ? AppTextStyles.bigIconOnTertiary(context)
+                      : AppTextStyles.body1(context),
                 ),
               ),
             ),
@@ -77,15 +85,8 @@ class LessonEntry extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: whiteTitleText,
-                  ),
-                  Text(
-                    kanjiPre,
-                    maxLines: 2,
-                    style: whiteBody1Text,
-                  ),
+                  Text(title, style: AppTextStyles.title(context)),
+                  Text(kanjiPre, maxLines: 2, style: AppTextStyles.body1(context)),
                   Visibility(
                     visible: ifShowLable,
                     child: Text(labelText,
