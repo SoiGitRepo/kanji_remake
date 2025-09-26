@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -10,8 +11,9 @@ import 'package:kanji_remake/page/kanji_overview_page/page_kanji_overview.dart';
 import 'package:kanji_remake/page/lesson_page/page_lesson.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
 import 'package:kanji_remake/page/splash_page/page_splash.dart';
-import 'package:kanji_remake/theme.dart';
+// import 'package:kanji_remake/theme.dart'; // 已迁移到 colors.dart 的 M3 主题构建
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kanji_remake/widgets/system_ui_overlay.dart';
 
 // Router provider for navigation
 final routerProvider = Provider<GoRouter>((ref) {
@@ -41,12 +43,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final sharedPre = await SharedPreferences.getInstance();
-  
+  // 开启沉浸式边到边，配合 AnnotatedRegion 与 AppBarTheme 统一控制状态栏/导航栏样式
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   runApp(
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPre),
-      ], 
+      ],
       child: const MyApp(),
     ),
   );
@@ -58,8 +62,7 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final isDarkMode = ref.watch(themeModeProvider);
-    
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Kanji Remake',
@@ -73,40 +76,14 @@ class MyApp extends HookConsumerWidget {
         Locale('en', ''),
         Locale('zh', ''),
       ],
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: kScaffoldBgColor,
-        brightness: isDarkMode ? Brightness.dark : Brightness.light,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-          size: 30,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: kNormalButtonStyle,
-        ),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          },
-        ),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: kNormalButtonStyle,
-        ),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          },
-        ),
-      ),
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      // Material 3 主题：根据系统浅色/深色自动切换
+      theme: buildLightTheme(),
+      darkTheme: buildDarkTheme(),
+      themeMode: ThemeMode.system,
       routerConfig: router,
+      // 用带有 WidgetsBindingObserver 的 SystemUIOverlay 组件全局包裹，
+      // 监听系统浅/深色切换并动态更新状态栏/导航栏样式（更可靠）
+      builder: (context, child) => SystemUIOverlay(child: child ?? const SizedBox.shrink()),
     );
   }
 }
