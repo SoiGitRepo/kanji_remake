@@ -57,8 +57,12 @@ class ChooseKanjiButton extends StatelessWidget {
           onPressed: onPressed(e),
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(kSmallPaddding),
-            backgroundColor:
-                isChosenAsCorrect ? kButtonBgColor : kButtonBgColor2,
+            backgroundColor: isChosenAsCorrect
+                ? (Theme.of(context).extension<AppColors>()?.success ?? Theme.of(context).colorScheme.tertiary)
+                : Theme.of(context).colorScheme.secondary,
+            foregroundColor: isChosenAsCorrect
+                ? (Theme.of(context).colorScheme.onTertiary)
+                : Theme.of(context).colorScheme.onSecondary,
             textStyle: TextStyle(
               fontSize: height,
             ),
@@ -92,6 +96,7 @@ class RadioGroupWithTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
     final locale = S.of(context);
     late final optionString;
@@ -115,7 +120,7 @@ class RadioGroupWithTabBar extends StatelessWidget {
         Container(
           width: size.width,
           decoration: BoxDecoration(
-            color: kRadioGroupColor,
+            color: cs.surface,
             borderRadius: BorderRadius.circular(
               kSmallRadius,
             ),
@@ -128,10 +133,10 @@ class RadioGroupWithTabBar extends StatelessWidget {
                 automaticIndicatorColorAdjustment: false,
                 indicatorPadding: EdgeInsets.all(2.0),
                 labelPadding: EdgeInsets.symmetric(vertical: kSmallPaddding),
-                labelColor: Colors.white,
-                unselectedLabelColor: kPrymaryColor,
+                labelColor: cs.onPrimary,
+                unselectedLabelColor: cs.primary,
                 indicator: BoxDecoration(
-                    color: kPrymaryColor,
+                    color: cs.primary,
                     borderRadius: BorderRadius.circular(kSmallRadius - 2)),
                 tabs: [
                   for (var item in options)
@@ -173,6 +178,7 @@ class CustomRadioGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = S.of(context);
+    final cs = Theme.of(context).colorScheme;
     final padding = MediaQuery.of(context).viewInsets;
     print(padding.left);
     final width = MediaQuery.of(context).size.width -
@@ -207,121 +213,63 @@ class CustomRadioGroup extends StatelessWidget {
         Text(
           "$title:",
         ),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: kRadioGroupColor,
-                borderRadius: BorderRadius.circular(kSmallRadius),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  for (var item in fixedOptions)
-                    item == 0
-                        ? Container(
-                            color: kDividerColor,
-                            width: 1,
-                            height: 15,
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              onChangeSelected(item);
-                            },
-                            child: SizedBox(
-                              width: width / options.length,
-                              child: AnimatedContainer(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 2.0,
-                                    horizontal:
-                                        initialIndex == options.indexOf(item)
-                                            ? 2.0
-                                            : 8.0),
-                                decoration: BoxDecoration(
-                                    color: kRadioGroupColor,
-                                    borderRadius: BorderRadius.circular(
-                                        kSmallRadius - 2)),
-                                duration: kFastDuration,
-                                curve: Curves.easeOutCubic,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: kSmallPaddding),
-                                child: Center(
-                                  child: Text(
-                                    optionString[options.indexOf(item)],
-                                    maxLines: 1,
-                                    overflow: TextOverflow.fade,
-                                    style: TextStyle(
-                                        fontSize: kSmallerText,
-                                        color: initialIndex ==
-                                                options.indexOf(item)
-                                            ? Colors.transparent
-                                            : kPrymaryColor),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                for (var item in fixedOptions)
-                  item == 0
-                      ? Container(
-                          color: Colors.transparent,
-                          width: 1,
-                          height: 15,
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            onChangeSelected(item);
-                          },
-                          child: SizedBox(
-                            width: width / options.length,
-                            child: AnimatedContainer(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 0.0,
-                                  horizontal:
-                                      initialIndex == options.indexOf(item)
-                                          ? 2.0
-                                          : 8.0),
-                              // decoration: BoxDecoration(
-                              //     color:
-                              //         // initialIndex == options.indexOf(item)
-                              //         // ? kPrymaryColor:
-                              //         kRadioGroupColor,
-                              //     borderRadius:
-                              //         BorderRadius.circular(kSmallRadius - 2)),
-                              duration: kFastDuration,
-                              curve: Curves.easeOutCubic,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: kSmallPaddding),
-                              child: Center(
-                                child: Text(
-                                  optionString[options.indexOf(item)],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.fade,
-                                  style: TextStyle(
-                                      fontSize: kSmallerText,
-                                      color:
-                                          initialIndex == options.indexOf(item)
-                                              ? Colors.white
-                                              : kPrymaryColor),
-                                ),
+        Container(
+          decoration: BoxDecoration(
+            color: cs.surface,
+            borderRadius: BorderRadius.circular(kSmallRadius),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (var item in fixedOptions)
+                item == 0
+                    ? Container(
+                        color: Theme.of(context).dividerColor,
+                        width: 1,
+                        height: 15,
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          onChangeSelected(item);
+                        },
+                        child: SizedBox(
+                          width: width / options.length,
+                          child: AnimatedContainer(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 2.0,
+                                horizontal:
+                                    initialIndex == options.indexOf(item)
+                                        ? 2.0
+                                        : 8.0),
+                            decoration: BoxDecoration(
+                                color: cs.surface,
+                                borderRadius:
+                                    BorderRadius.circular(kSmallRadius - 2)),
+                            duration: kFastDuration,
+                            curve: Curves.easeOutCubic,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kSmallPaddding),
+                            child: Center(
+                              child: Text(
+                                optionString[options.indexOf(item)],
+                                maxLines: 1,
+                                overflow: TextOverflow.fade,
+                                style: TextStyle(
+                                    fontSize: kSmallerText,
+                                    color: initialIndex ==
+                                            options.indexOf(item)
+                                        ? cs.onPrimary
+                                        : cs.primary),
                               ),
                             ),
                           ),
-                        ).glassy(
-                          apply: initialIndex == options.indexOf(item),
-                          borderRadius: kSmallRadius - 2,
-                        )
-              ],
-            ),
-          ],
+                        ),
+                      ).glassy(
+                        apply: initialIndex == options.indexOf(item),
+                        borderRadius: kSmallRadius - 2,
+                      )
+            ],
+          ),
         )
       ],
     );
@@ -345,10 +293,11 @@ class MyDialogContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final cs = Theme.of(context).colorScheme;
     return AlertDialog(
       elevation: elevation,
       scrollable: true,
-      backgroundColor: kDialogBgColor,
+      backgroundColor: cs.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kNormalRadius),
       ),
@@ -356,7 +305,7 @@ class MyDialogContainer extends StatelessWidget {
       content: DefaultTextStyle(
           style: defaultTextStyle ??
               TextStyle(
-                  color: kPrymaryColor,
+                  color: cs.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: kNormalText),
           child: SizedBox(width: size.width, child: child ?? Container())),
@@ -390,17 +339,24 @@ class MyOutlineTextButton extends StatelessWidget {
         width: size.width * 0.5,
         child: TextButton(
           style: TextButton.styleFrom(
-            foregroundColor: color ?? kPrymaryColor,
-            backgroundColor: fill ?? false ? color : null,
+            foregroundColor: color ?? Theme.of(context).colorScheme.primary,
+            backgroundColor: (fill ?? false)
+                ? (color ?? Theme.of(context).colorScheme.primary)
+                : null,
             padding: EdgeInsets.zero,
-            side: BorderSide(color: color ?? kPrymaryColor, width: 1.2),
+            side: BorderSide(
+                color: color ?? Theme.of(context).colorScheme.primary,
+                width: 1.2),
           ),
           onPressed: enable ? onTap : null,
           child: FittedBox(
             child: Text(
               text,
               style: whiteSubTitleText.copyWith(
-                  color: textColor ?? kPrymaryColor,
+                  color: textColor ??
+                      ((fill ?? false)
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.primary),
                   fontWeight: FontWeight.bold,
                   fontSize: kSmallText),
             ),

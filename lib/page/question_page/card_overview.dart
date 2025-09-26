@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/page/question_page/page_question.dart';
@@ -20,9 +19,10 @@ class KanjiOverviewCard extends QuestionCardBlock {
     final titleHeight = size.height * kTitleHeightRTSH;
     final subtitleHeight = size.height * kSubtitleHeightRTSH;
     final currentKanjiWord = ref.watch(currentQuestionCardProvider).kanjiWord;
+    final cs = Theme.of(context).colorScheme;
 
     return DefaultTextStyle(
-      style: TextStyle(color: Colors.white, fontSize: titleHeight),
+      style: TextStyle(color: cs.onSurface, fontSize: titleHeight),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -33,7 +33,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
               child: FittedBox(
                 child: Text(
                   _appLocalizations.memorize_this_word,
-                  style: TextStyle(color: kBody2Color),
+                  style: TextStyle(color: cs.onSurfaceVariant),
                 ),
               ),
             ),
@@ -56,7 +56,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
             child: FittedBox(
               child: Text(
                 currentKanjiWord.meanings?.take(2).toString() ?? 'no Kanjikata',
-                style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
+                style: Theme.of(context).textTheme.displaySmall!.apply(color: cs.onSurface),
               ),
             ),
           ),
@@ -68,12 +68,12 @@ class KanjiOverviewCard extends QuestionCardBlock {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: cs.primaryContainer,
                   ),
                   child: Icon(
                     Icons.play_circle_fill_rounded,
                     size: 50.0,
-                    color: Colors.blue[700],
+                    color: cs.primary,
                   ),
                 ),
               ),
@@ -84,7 +84,7 @@ class KanjiOverviewCard extends QuestionCardBlock {
                   child: Text(
                     'OK',
                   ),
-                  style: kOkButtonStyle,
+                  style: AppButtonStyles.primary(context),
                 ).glassy(borderRadius: kSmallRadius),
               )
             ],

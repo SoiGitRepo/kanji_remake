@@ -20,6 +20,8 @@ class WidgetLevelEntry extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = min(size.width, size.height) * 0.6;
     final ThemeData _theme = Theme.of(context);
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final S _appLocalizations = S.of(context);
 
     return Padding(
@@ -50,7 +52,7 @@ class WidgetLevelEntry extends StatelessWidget {
                 width: width / 4 * 3,
                 height: width / 4 * 3,
                 decoration: BoxDecoration(
-                  // color: Colors.red,
+                  color: levelEntity.color,
                   shape: BoxShape.circle,
                   // boxShadow: const [
                   //   BoxShadow(
@@ -65,19 +67,19 @@ class WidgetLevelEntry extends StatelessWidget {
                     child: Text(
                       levelEntity.title,
                       style: _theme.textTheme.displayLarge?.copyWith(
-                        color: Colors.white,
+                        color: cs.onSurface,
                       ),
                     ),
                   ),
                 ),
               ).glassyOval(
                 settings: LiquidGlassSettings(
-                  glassColor: levelEntity.color.withAlpha(123),
+                  glassColor: levelEntity.color.withAlpha(isDark ? 123 : 255),
                   thickness: 10,
                   blur: 5,
                   blend: 40,
                   lightIntensity: 0.5,
-                  lightAngle: 0.7 * pi,
+                  lightAngle: 0.3 * pi,
                   ambientStrength: 0.2,
                 ),
               ),
@@ -88,14 +90,15 @@ class WidgetLevelEntry extends StatelessWidget {
           ),
           Text(
             "${_appLocalizations.level} ${levelEntity.level}",
-            style: _theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+            style: _theme.textTheme.titleLarge?.copyWith(color: cs.onSurface),
           ),
           const SizedBox(
             height: kSmallPaddding,
           ),
           Text(
             "(${_appLocalizations.jlpt} ${levelEntity.title})",
-            style: _theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
+            style: _theme.textTheme.bodyMedium
+                ?.copyWith(color: cs.onSurfaceVariant),
           )
         ],
       ),

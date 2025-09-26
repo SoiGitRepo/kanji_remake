@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/constant.dart';
 import 'package:kanji_remake/generated/l10n.dart';
 import 'package:kanji_remake/model/kanji_field.dart';
@@ -44,8 +43,9 @@ class FourChoiceCard extends QuestionCardBlock {
       ref.read(_buttonEnableProvider.notifier).toggle(index);
     }
 
+    final cs = Theme.of(context).colorScheme;
     return DefaultTextStyle(
-      style: TextStyle(color: Colors.white, fontSize: titleHeight),
+      style: TextStyle(color: cs.onSurface, fontSize: titleHeight),
       child: Column(
         children: [
           Align(
@@ -104,8 +104,9 @@ class FourChoiceCard extends QuestionCardBlock {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(kNormalRadius)),
-                        backgroundColor: kButtonBgColor2,
-                        minimumSize: Size.fromHeight(kNormalButtonHeight)),
+                        backgroundColor: cs.secondary,
+                        foregroundColor: cs.onSecondary,
+                        minimumSize: const Size.fromHeight(kNormalButtonHeight)),
                     onPressed: buttonEnableList[index]
                         ? () {
                             if (e != currentAnswer) {
