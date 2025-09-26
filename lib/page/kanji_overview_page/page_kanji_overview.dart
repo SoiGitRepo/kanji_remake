@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kanji_remake/colors.dart';
 import 'package:kanji_remake/page/setting_dialog/sync/setting_sync_route.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,8 +42,7 @@ class KanjiOverviewPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: kScaffoldBgColor,
+        // 遵循全局主题（Material 3）设置的 AppBarTheme 与状态栏样式
         leading: IconButton(
           onPressed: () {
             popThisPageOut(context);
@@ -60,7 +57,6 @@ class KanjiOverviewPage extends HookConsumerWidget {
             icon: const Icon(Icons.settings_rounded),
           ),
         ],
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
     );
   }

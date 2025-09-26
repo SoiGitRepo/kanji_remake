@@ -71,6 +71,7 @@ extension GlassyX on Widget {
   }
 
   Widget glassyOval({
+    bool glassContainsChild = true,
     LiquidGlassSettings? settings,
     EdgeInsetsGeometry? padding,
   }) {
@@ -82,7 +83,7 @@ extension GlassyX on Widget {
         : this;
     return LiquidGlass(
       shape: LiquidOval(),
-      glassContainsChild: true,
+      glassContainsChild: glassContainsChild,
       settings: settings ?? const LiquidGlassSettings(),
       child: ClipOval(
         child: content,
